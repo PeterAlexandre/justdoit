@@ -11,6 +11,7 @@ django = "*"
 python-decouple = "*"
 pep8 = "*"
 psycopg2 = "*"
+dj-database-url = "*"
 
 [requires]
 python_version = "3.6"
