@@ -10,8 +10,7 @@ class BaseModel(models.Model):
 
 class Board(BaseModel):
 
-    users = models.ForeignKey(User, on_delete=models.CASCADE)
-    lists = models.ForeignKey('List', on_delete=models.CASCADE)
+    users = models.ManyToManyField(User)
 
     def __str__(self):
         return self.title
@@ -21,9 +20,9 @@ class Board(BaseModel):
         verbose_name_plural = 'boards'
 
 
-class List(BaseModel):
+class ColumnList(BaseModel):
 
-    tasks = models.ForeignKey('Task', on_delete=models.CASCADE)
+    user_board = models.ForeignKey('Board', on_delete=models.CASCADE)
     position = models.PositiveIntegerField()
 
     def __str__(self):
@@ -47,10 +46,12 @@ class Task(BaseModel):
     ]
 
     description = models.TextField()
-    due_date = models.DateTimeField()
+    due_date = models.DateTimeField(null=True)
     status = models.CharField(
         max_length=8, choices=STATUS_CHOICES, default=ACTIVE)
     position = position = models.PositiveIntegerField()
+    column_list = models.ForeignKey(
+        'ColumnList', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.title
