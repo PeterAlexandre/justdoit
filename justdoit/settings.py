@@ -1,6 +1,6 @@
 import os
+import dj_database_url
 
-from . import dj_database_url
 from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -22,6 +22,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'justdoit.todolist',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
