@@ -22,7 +22,11 @@ class Board(BaseModel):
 
 class ColumnList(BaseModel):
 
-    user_board = models.ForeignKey('Board', on_delete=models.CASCADE)
+    user_board = models.ForeignKey(
+        'Board',
+        on_delete=models.CASCADE,
+        related_name='lists'
+    )
     position = models.PositiveIntegerField()
 
     def __str__(self):
