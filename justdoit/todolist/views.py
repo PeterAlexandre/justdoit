@@ -16,7 +16,13 @@ class BoardDetail(DetailView):
     template_name = 'board/board.html'
 
 
-class ColumnLists(ListView):
+class Lists(ListView):
     model = ColumnList
     template_name = 'list/lists.html'
     context_object_name = 'lists'
+
+
+class ListDetail(DetailView):
+    model = ColumnList
+    template_name = 'list/list_detail.html'
+    context_object_name = 'list'

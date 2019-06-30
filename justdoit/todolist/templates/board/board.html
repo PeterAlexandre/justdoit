@@ -1,3 +1,9 @@
 <h2> {{ board.title }} </h2>
 
-<a href="{% url 'lists' %}"> Listas </a>
+<ul>
+    {% for list in board.lists.all %}
+        <li>
+            <a href="{% url 'list_detail' list.id %}">{{ list.title }}</a>
+        </li>        
+    {% endfor %}
+</ul>
