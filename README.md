@@ -1,4 +1,5 @@
 # Justdoit :clipboard:
+A portfolio application made in django to manage tasks and increase productivity.
 
 ## Class Diagram
 
