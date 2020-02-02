@@ -25,10 +25,12 @@ class ToDo(BaseModel):
 
 
 class Task(BaseModel):
+    STATUS = choices.TaskStatus
+
     title = models.CharField(max_length=60)
     description = models.TextField()
     deadline = models.DateTimeField(blank=True)
-    status = models.CharField(max_length=1, choices=choices.TaskStatus, default='OPEN')
+    status = models.CharField(max_length=4, choices=STATUS.choices, default='OPEN')
     to_do = models.ForeignKey('ToDo', on_delete=models.CASCADE)
     tags = models.ManyToManyField('Tag', related_name='tasks', related_query_name='task', verbose_name='Tags')
 
@@ -41,5 +43,7 @@ class Task(BaseModel):
 
 
 class Tag(BaseModel):
+    COLOR = choices.TagColor
+
     title = models.CharField(max_length=20)
-    color = models.CharField(max_length=7, choices=choices.TagColor, default='GRA')
+    color = models.CharField(max_length=7, choices=COLOR.choices, default='GRA')
