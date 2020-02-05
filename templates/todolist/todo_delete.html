@@ -1,0 +1,14 @@
+{% extends 'base_site.html' %}
+
+{% block html_title %}Delete todolist{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        {% url 'todolist:todo_detail' pk=todo.pk as cancel_url %}
+
+        <p>Are you sure you want to delete {{ name }}?</p>
+        <button>Confirm</button>
+        <button type="button" onclick="location.href='{{ cancel_url }}';">Cancel</button>
+    </form>
+{% endblock %}

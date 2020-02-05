@@ -1,9 +1,0 @@
-<h2> {{ board.title }} </h2>
-
-<ul>
-    {% for list in board.lists.all %}
-        <li>
-            <a href="{% url 'list_detail' list.id %}">{{ list.title }}</a>
-        </li>        
-    {% endfor %}
-</ul>

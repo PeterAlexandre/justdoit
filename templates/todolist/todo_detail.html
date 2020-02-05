@@ -1,0 +1,14 @@
+{% extends 'base_site.html' %}
+
+{% block html_title %}List todo{% endblock %}
+
+{% block content %}
+    <div><h1>{{ todo.title }}</h1></div>
+
+    {% url 'todolist:todo_update' pk=todo.pk as edit_url %}
+    {% url 'todolist:todo_delete' pk=todo.pk as delete_url %}
+    <div>
+        <button type="button" onclick="location.href='{{ edit_url }}';">Edit todolist</button>
+        <button type="button" onclick="location.href='{{ delete_url }}';">Delete todolist</button>
+    </div>
+{% endblock %}

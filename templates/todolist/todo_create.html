@@ -1,0 +1,11 @@
+{% extends 'base_site.html' %}
+
+{% block html_title %}Create todolist{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button>Save</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base_site.html' %}
+
+{% block html_title %}Todolist{% endblock %}
+
+{% block css %}
+    <style>
+        table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        }
+
+        td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        }
+
+        tr:nth-child(even) {
+        background-color: #dddddd;
+        }
+
+        button {
+            margin: 25px 10px 25px;
+            float: right;
+        }
+
+        h1 {
+            position: absolute;
+            margin: 15px 10px auto;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% url 'todolist:todo_create' as create_url %}
+    <div>
+        <h1>Todolist</h1>
+        <button type="button" onclick="location.href='{{ create_url }}'; ">Add todolist</button>
+    </div>
+    <div>
+        <table>
+            <tr>
+                <th>Title</th>
+            </tr>
+            {% for todo in todo_list %}
+                <tr>
+                    <td><a href="{% url 'todolist:todo' pk=todo.pk %}">{{ todo.name }}</a></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td>---</td>
+                </tr>
+                <p>Sorry, no todolist.</p>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
