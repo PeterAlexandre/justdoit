@@ -30,6 +30,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'widget_tweaks',
+
     'justdoit.todolist',
 ]
 
@@ -48,7 +51,7 @@ ROOT_URLCONF = 'justdoit.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [f'{BASE_DIR.path("templates")}'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,6 +93,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Authetication settings
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+
+LOGOUT_URL = 'logout'
+LOGOUT_REDIRECT_URL = 'home'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -109,3 +118,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+# STATIC_ROOT = f'{BASE_DIR.path("staticfiles")}'
+STATICFILES_DIRS = (
+    f'{BASE_DIR.path("static")}',
+)
