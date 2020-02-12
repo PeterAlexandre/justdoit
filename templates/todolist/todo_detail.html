@@ -1,8 +1,7 @@
-{% extends 'base_site.html' %}
+{% extends 'simple_page.html' %}
 
 {% block html_title %}List todo{% endblock %}
 <!--
-{% block content %}
     <div><h1>{{ todo.title }}</h1></div>
 
     {% url 'todolist:todo_update' pk=todo.pk as edit_url %}
@@ -11,7 +10,7 @@
         <button type="button" onclick="location.href='{{ edit_url }}';">Edit todolist</button>
         <button type="button" onclick="location.href='{{ delete_url }}';">Delete todolist</button>
     </div>
-{% endblock %} -->
+-->
 
 {% block navbar %}{% endblock %}
 {% block content %}
@@ -22,15 +21,20 @@
 			</div>
         </div>
 
-        <div class="alert bg-primary" role="alert">
-            <em class="fa fa-lg fa-warning">&nbsp;</em> {{ todo_}}
-            <a href="#" class="pull-right">
-                <em class="fa fa-lg fa-close"></em>
-            </a>
-        </div>
-
-        <div class="alert bg-info" role="alert"><em class="fa fa-lg fa-warning">&nbsp;</em> Welcome to the admin dashboard panel bootstrap template <a href="#" class="pull-right"><em class="fa fa-lg fa-close"></em></a></div>
-
+        {% for task in todo.tasks.all %}
+            <div class="alert bg-primary" role="alert">
+                <em class="fa fa-lg fa-warning">&nbsp;</em> {{ task.title }}
+                <a href="#" class="pull-right">
+                    <em class="fa fa-lg fa-close"></em>
+                </a>
+            </div>
+        {% empty %}
+            <div>
+                <a href="#">
+                    <em class="fa fa-exclamation-circle" aria-hidden="true">&nbsp;</em> Sorry, no tasks in this tododivst.
+                </a>
+            </div>
+        {% endfor %}
 
     </div>
 {% endblock %}

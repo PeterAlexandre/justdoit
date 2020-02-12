@@ -56,7 +56,7 @@ class ToDoDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'todo'
 
     def get_context_data(self, **kwargs):
-        return super().get_context_data(todolists=self.queryset.exclude(pk=self.object.pk).order_by('-updated_at'))
+        return super().get_context_data(todo_list=self.queryset.exclude(pk=self.object.pk).order_by('-updated_at'))
 
     def get_queryset(self):
         if self.queryset is None:

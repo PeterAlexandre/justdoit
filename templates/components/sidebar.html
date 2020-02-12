@@ -17,6 +17,7 @@
         </div>
     </form>
     <ul class="nav menu">
+        {% include 'components/sidebar-items.html' %}
         {% for todo in todo_list %}
             <li>
                 <a href="{% url 'todolist:todo_detail' pk=todo.pk %}">
