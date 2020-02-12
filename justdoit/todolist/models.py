@@ -28,11 +28,17 @@ class Task(BaseModel):
     STATUS = choices.TaskStatus
 
     title = models.CharField(max_length=60)
-    description = models.TextField()
-    deadline = models.DateTimeField(blank=True)
+    description = models.TextField(blank=True)
+    deadline = models.DateTimeField(blank=True, null=True)
     status = models.CharField(max_length=4, choices=STATUS.choices, default='OPEN')
-    to_do = models.ForeignKey('ToDo', on_delete=models.CASCADE)
-    tags = models.ManyToManyField('Tag', related_name='tasks', related_query_name='task', verbose_name='Tags')
+    to_do = models.ForeignKey('ToDo', on_delete=models.CASCADE, related_name='tasks', related_query_name='task')
+    tags = models.ManyToManyField(
+        'Tag',
+        verbose_name='Tags',
+        blank=True,
+        related_name='tasks',
+        related_query_name='task',
+    )
 
     def __str__(self):
         return self.title
