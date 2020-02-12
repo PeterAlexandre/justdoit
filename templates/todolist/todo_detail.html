@@ -1,7 +1,7 @@
 {% extends 'base_site.html' %}
 
 {% block html_title %}List todo{% endblock %}
-
+<!--
 {% block content %}
     <div><h1>{{ todo.title }}</h1></div>
 
@@ -10,5 +10,27 @@
     <div>
         <button type="button" onclick="location.href='{{ edit_url }}';">Edit todolist</button>
         <button type="button" onclick="location.href='{{ delete_url }}';">Delete todolist</button>
+    </div>
+{% endblock %} -->
+
+{% block navbar %}{% endblock %}
+{% block content %}
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">{{ todo.title }}</h1>
+			</div>
+        </div>
+
+        <div class="alert bg-primary" role="alert">
+            <em class="fa fa-lg fa-warning">&nbsp;</em> {{ todo_}}
+            <a href="#" class="pull-right">
+                <em class="fa fa-lg fa-close"></em>
+            </a>
+        </div>
+
+        <div class="alert bg-info" role="alert"><em class="fa fa-lg fa-warning">&nbsp;</em> Welcome to the admin dashboard panel bootstrap template <a href="#" class="pull-right"><em class="fa fa-lg fa-close"></em></a></div>
+
+
     </div>
 {% endblock %}

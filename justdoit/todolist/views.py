@@ -55,7 +55,7 @@ class ToDoDetailView(LoginRequiredMixin, DetailView):
     template_name = 'todolist/todo_detail.html'
     context_object_name = 'todo'
 
-    def get_context_data(self):
+    def get_context_data(self, **kwargs):
         return super().get_context_data(todolists=self.queryset.exclude(pk=self.object.pk).order_by('-updated_at'))
 
     def get_queryset(self):
@@ -66,5 +66,5 @@ class ToDoDetailView(LoginRequiredMixin, DetailView):
 
 class ToDoListView(LoginRequiredMixin, ListView):
     model = ToDo
-    template_name = 'todolist/todo_list.html'
+    template_name = 'index.html'
     context_object_name = 'todo_list'

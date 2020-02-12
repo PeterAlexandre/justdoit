@@ -2,6 +2,7 @@
 
 {% block html_title %}Home{% endblock %}
 
+{% block navbar %}{% endblock %}
 {% block content %}
     <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
         <div class="row">
@@ -12,7 +13,6 @@
 
         <div><h3>Click here to access the todolists</h3></div>
 
-        <div><a href="{% url 'todolist:todo_list' %}">List of todolists</a></div>
+        <div><a href="{% url 'todolist:home' %}">List of todolists</a></div>
     </div>
-
 {% endblock %}

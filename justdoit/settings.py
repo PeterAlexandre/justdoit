@@ -95,10 +95,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Authetication settings
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'todolist:home'
 
 LOGOUT_URL = 'logout'
-LOGOUT_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'todolist:home'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

@@ -1,6 +1,5 @@
 body {
   background: #f1f4f7;
-  padding-top: 60px;
   font-size: 14px;
   color: #444444;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -771,11 +770,10 @@ a.label:hover, a.label:focus {
   .sidebar {
     display: block;
     position: fixed;
-    top: 60px;
+    top: 0px;
     bottom: 0;
     left: 0;
     z-index: 1000;
-    display: block;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
