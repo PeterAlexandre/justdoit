@@ -8,6 +8,15 @@ class ToDoForm(ModelForm):
         model = ToDo
         fields = ['title']
 
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.owner = user
+
+    def save(self, commit=True):
+        if not self.instance.pk:
+            self.instance.owner = self.owner
+        return super().save(commit)
+
 
 class TaskForm(ModelForm):
     class Meta:

@@ -31,7 +31,12 @@ class ToDoCreateView(LoginRequiredMixin, CreateView):
     template_name = 'todolist/todo_create.html'
 
     def get_success_url(self):
-        return reverse('todolist:todo_list')
+        return reverse('todolist:todo_detail', kwargs={'pk': self.object.pk})
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 
 class ToDoUpdateView(LoginRequiredMixin, UpdateView):
