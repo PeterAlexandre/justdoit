@@ -23,15 +23,17 @@
 
         {% for task in todo.tasks.all %}
             <div class="alert bg-primary" role="alert">
-                <em class="fa fa-lg fa-warning">&nbsp;</em> {{ task.title }}
+                <em class="fa fa-lg fa-square-o">&nbsp;</em>
+                 {{ task.title }}
                 <a href="#" class="pull-right">
-                    <em class="fa fa-lg fa-close"></em>
+                    <em class="fa fa-lg fa-trash" aria-hidden="true" style="color: gray !important;"></em>
                 </a>
             </div>
         {% empty %}
             <div>
                 <a href="#">
-                    <em class="fa fa-exclamation-circle" aria-hidden="true">&nbsp;</em> Sorry, no tasks in this tododivst.
+                    <em class="fa fa-lg fa-warning" aria-hidden="true" style="color: gray !important;">&nbsp;</em>
+                     Sorry, no tasks in this tododivst.
                 </a>
             </div>
         {% endfor %}
