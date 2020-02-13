@@ -52,7 +52,7 @@ class ToDoDeleteView(LoginRequiredMixin, DeleteView):
     model = ToDo
     template_name = 'todolist/todo_delete.html'
     context_object_name = 'todo'
-    success_url = reverse_lazy('todolist:todo_list')
+    success_url = reverse_lazy('todolist:home')
 
 
 class ToDoDetailView(LoginRequiredMixin, DetailView):
