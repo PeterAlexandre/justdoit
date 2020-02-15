@@ -1,43 +1,30 @@
 {% extends 'simple_page.html' %}
 
+<!-- simple_page blocks -->
 {% block html_title %}List todo{% endblock %}
 
-{% block navbar %}{% endblock %}
-{% block content %}
-    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-        <div class="row">
-			<div class="col-xs-6">
-                <h1>{{ todo.title }}</h1>
-            </div>
-            <div class="col-xs-6">
-                <div class="pull-right dropdown" style="margin-top: 20px;">
-                    <a class="btn dropdown-toggle" type="button" style="color: black;" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span class="sr-only">Settings</span>
-                        <i class="fa fa-lg fa-cog"></i>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="#">Edit list</a></li>
-                        <li><a href="#">Delete list</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+{% block page_title %}{{ todo.title }}{% endblock %}
 
-        {% for task in todo.tasks.all %}
-            <div class="alert bg-primary" role="alert">
-                <em class="fa fa-lg fa-square-o">&nbsp;</em>
-                 {{ task.title }}
-                <a href="#" class="pull-right">
-                    <em class="fa fa-lg fa-trash" aria-hidden="true" style="color: gray !important;"></em>
-                </a>
-            </div>
-        {% empty %}
-            <div>
-                <a href="#">
-                    <em class="fa fa-lg fa-warning" aria-hidden="true" style="color: gray !important;">&nbsp;</em>
-                     Sorry, no tasks in this list.
-                </a>
-            </div>
-        {% endfor %}
-    </div>
+{% block dropdown_itens %}
+    <li><a href="#">Edit list</a></li>
+    <li><a href="#">Delete list</a></li>
+{% endblock %}
+
+{% block content %}
+    {% for task in todo.tasks.all %}
+        <div class="alert bg-primary" role="alert">
+            <em class="fa fa-lg fa-square-o">&nbsp;</em>
+            {{ task.title }}
+            <a href="#" class="pull-right">
+                <em class="fa fa-lg fa-trash" aria-hidden="true" style="color: gray !important;"></em>
+            </a>
+        </div>
+    {% empty %}
+        <div>
+            <a href="#">
+                <em class="fa fa-lg fa-warning" aria-hidden="true" style="color: gray !important;">&nbsp;</em>
+                Sorry, no tasks in this list.
+            </a>
+        </div>
+    {% endfor %}
 {% endblock %}
