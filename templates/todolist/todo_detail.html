@@ -3,11 +3,13 @@
 <!-- simple_page blocks -->
 {% block html_title %}List todo{% endblock %}
 
-{% block page_title %}{{ todo.title }}{% endblock %}
+{% block page_title %}
+    <h1>{{ todo.title }}</h1>
+{% endblock %}
 
 {% block dropdown_itens %}
     <li><a href="#">Edit list</a></li>
-    <li><a href="#">Delete list</a></li>
+    <li><a href="#" data-toggle="modal" data-target="#confirmDelete">Delete list</a></li>
 {% endblock %}
 
 {% block content %}
@@ -27,4 +29,27 @@
             </a>
         </div>
     {% endfor %}
+
+    <!-- Modal to confirm delete todolist -->
+    <div id="confirmDelete" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Are you sure?</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <em class="fa fa-lg fa-warning">&nbsp;</em>
+                         You're about to delete <strong>{{ todo.title }}</strong>. <span class="text-danger">This action cannot be undone!</span>
+                    </p>
+                </div>
+                <form method="POST" action="{% url 'todolist:todo_delete' pk=todo.pk %}" class="modal-footer">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
