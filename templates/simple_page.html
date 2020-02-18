@@ -6,19 +6,21 @@
     <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
         <div class="row">
             <div class="col-xs-6">
-                <h1>{% block page_title %}{% endblock %}</h1>
+                <h1 class="page-header">{% block page_title %}{% endblock %}</h1>
             </div>
-            <div class="col-xs-6">
-                <div class="pull-right dropdown" style="margin-top: 20px; margin-right: 2px;">
-                    <a class="btn dropdown-toggle" type="button" style="color: black;" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span class="sr-only">Actions</span>
-                        <i class="fa fa-lg fa-ellipsis-v"></i>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        {% block dropdown_itens %}{% endblock %}
-                    </ul>
+            {% if  todo %}
+                <div class="col-xs-6">
+                    <div class="pull-right dropdown" style="margin-top: 20px; margin-right: 2px;">
+                        <a class="btn dropdown-toggle" type="button" style="color: black;" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="sr-only">Actions</span>
+                            <i class="fa fa-lg fa-ellipsis-v"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            {% block dropdown_itens %}{% endblock %}
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
         </div>
 
         {% block content %}{% endblock %}

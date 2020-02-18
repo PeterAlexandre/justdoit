@@ -45,7 +45,12 @@ class ToDoUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'todolist/todo_update.html'
 
     def get_success_url(self):
-        return reverse('todolist:todo', kwargs={'pk': self.object.pk})
+        return reverse('todolist:todo_detail', kwargs={'pk': self.object.pk})
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 
 class ToDoDeleteView(LoginRequiredMixin, DeleteView):
