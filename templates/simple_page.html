@@ -24,6 +24,30 @@
         </div>
 
         {% block content %}{% endblock %}
-
     </div>
+
+    <script>
+        $("#formTodo").submit(function (event) {
+            // console.log($(this).serialize());
+            event.preventDefault();
+
+            $.ajax({
+                url: "http://127.0.0.1:8000/api/v1/todo/",
+                type: "POST",
+                data: {
+                    title: $("#id_title").val()
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data){
+                location.href = "{% url 'todolist:todo_detail' pk=99999 %}".replace("99999", data.pk);
+            }).fail(function (data) {
+                $("#formTodoError").text(data.error().responseJSON.title[0]);
+                $("#formTodoError").removeClass("hidden");
+            })
+        });
+    </script>
 {% endblock %}

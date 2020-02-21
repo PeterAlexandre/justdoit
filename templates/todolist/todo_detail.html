@@ -45,14 +45,13 @@
                          You're about to delete <strong>{{ todo.title }}</strong>. <span class="text-danger">This action cannot be undone!</span>
                     </p>
                 </div>
-                <div class="modal-footer" method="POST" action="{% url 'todolist:todo_delete' pk=todo.pk %}">
+                <form class="modal-footer" method="POST" action="{% url 'todolist:todo_delete' pk=todo.pk %}">
                     {% csrf_token %}
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <button class="btn btn-danger">Delete</button>
                 </form>
             </div>
         </div>
-    </div>
     </div>
 
     <!-- Modal to edit and update todolist -->

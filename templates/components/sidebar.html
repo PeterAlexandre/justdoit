@@ -13,10 +13,11 @@
     </div>
     <div class="divider"></div>
 
-    <form method="POST" action="{% url 'todolist:todo_create' %}">
+    <form id="formTodo" method="POST">
         {% csrf_token %}
         <div class="form-group">
             {% render_field todo_create.title class="form-control" placeholder="New todolist" %}
+            <div id="formTodoError" class="comment hidden text-danger"></div>
         </div>
     </form>
 
