@@ -2,7 +2,9 @@
 {% load static widget_tweaks %}
 
 <!-- simple_page blocks -->
-{% block html_title %}List todo{% endblock %}
+{% block html_title %}
+    - {{ todo.title }}
+{% endblock %}
 
 {% block page_title %}
     {{ todo.title }}
@@ -20,13 +22,6 @@
             {{ task.title }}
             <a href="#" class="pull-right">
                 <em class="fa fa-lg fa-trash" aria-hidden="true" style="color: gray !important;"></em>
-            </a>
-        </div>
-    {% empty %}
-        <div>
-            <a href="#">
-                <em class="fa fa-lg fa-warning" aria-hidden="true" style="color: gray !important;">&nbsp;</em>
-                Sorry, no tasks in this list.
             </a>
         </div>
     {% endfor %}
