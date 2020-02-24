@@ -26,17 +26,15 @@
         {% block content %}{% endblock %}
     </div>
 
+    <!-- Request: Create a new todo list  -->
     <script>
         $("#formTodo").submit(function (event) {
-            // console.log($(this).serialize());
             event.preventDefault();
 
             $.ajax({
                 url: "http://127.0.0.1:8000/api/v1/todo/",
                 type: "POST",
-                data: {
-                    title: $("#id_title").val()
-                },
+                data: {title: $("#id_title").val()},
                 beforeSend: function (xhr, settings) {
                     if (!safeMethod(settings.type) && !this.crossDomain) {
                         xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
@@ -45,8 +43,53 @@
             }).done(function (data){
                 location.href = "{% url 'todolist:todo_detail' pk=99999 %}".replace("99999", data.pk);
             }).fail(function (data) {
-                $("#formTodoError").text(data.error().responseJSON.title[0]);
+                $("#formTodoError").text(data.error().responseJSON.detail);
                 $("#formTodoError").removeClass("hidden");
+            })
+        });
+    </script>
+
+    <!-- Request: Edit to do list  -->
+    <script>
+        $("#updateTodolistForm").submit(function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: "http://127.0.0.1:8000/api/v1/todo/{{ todo.pk }}/",
+                type: "PUT",
+                data : {title: $("#changedTitle").val()},
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data){
+                location.href = "{% url 'todolist:todo_detail' pk=99999 %}".replace("99999", data.pk);
+            }).fail(function (data) {
+                $("#updateTodolistFormError").text(data.error().responseJSON.detail);
+                $("#updateTodolistFormError").removeClass("hidden");
+            })
+        });
+    </script>
+
+    <!-- Request: Delete to do list  -->
+    <script>
+        $("#deleteTodolistForm").submit(function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: "http://127.0.0.1:8000/api/v1/todo/{{ todo.pk }}/",
+                type: "DELETE",
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data){
+                location.href = "{% url 'todolist:home' %}";
+            }).fail(function (data) {
+                $("#deleteTodolistFormError").text(data.error().responseJSON.detail);
+                $("#deleteTodolistFormError").removeClass("hidden");
             })
         });
     </script>
