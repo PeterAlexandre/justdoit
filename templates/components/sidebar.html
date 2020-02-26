@@ -1,16 +1,27 @@
 {% load static widget_tweaks %}
 
-<div id="sidebar" class="col-sm-3 col-lg-2 sidebar">
-    <div class="profile-sidebar">
+<div id="sidebar" class="col-sm-3 col-lg-2 sidebar parent">
+    <div class="profile-sidebar" data-toggle="collapse" href="#logout">
         <div class="profile-userpic">
             <img src="{% static 'img/profile.png' %}" class="img-responsive" alt="">
         </div>
         <div class="profile-usertitle">
             <div class="profile-usertitle-name">Peter Alexandre</div>
-            <div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+            <div class="profile-usertitle-status">
+                Settings
+                <span data-toggle="collapse" href="#logout" class="collapsed dropdown-icon"></span>
+            </div>
         </div>
         <div class="clear"></div>
     </div>
+    <ul class="children collapse nav menu" id="logout" style="background-color: #f1f4f7; margin: unset;">
+        <li>
+            <a class="" href="#">
+                <span class="fa fa-sign-out">&nbsp;</span> Logout
+            </a>
+        </li>
+    </ul>
+
     <div class="divider"></div>
 
     <form id="formTodo" method="POST">
