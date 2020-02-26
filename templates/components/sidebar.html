@@ -6,7 +6,11 @@
             <img src="{% static 'img/profile.png' %}" class="img-responsive" alt="">
         </div>
         <div class="profile-usertitle">
-            <div class="profile-usertitle-name">Peter Alexandre</div>
+        {% if user.first_name %}
+            <div class="profile-usertitle-name">{{ user.first_name }} {{ user.last_name}}</div>
+        {% else %}
+            <div class="profile-usertitle-name">User {{ user.pk }}</div>
+        {% endif %}
             <div class="profile-usertitle-status">
                 Settings
                 <span data-toggle="collapse" href="#logout" class="collapsed dropdown-icon"></span>

@@ -21,7 +21,7 @@ class LoginView(DJLoginView):
 # ToDo View
 class ToDoDetailView(LoginRequiredMixin, DetailView):
     model = ToDo
-    template_name = 'todolist/detail.html'
+    template_name = 'todolist/todo_detail.html'
     context_object_name = 'todo'
 
     def get_context_data(self, **kwargs):
