@@ -16,6 +16,16 @@
 {% endblock %}
 
 {% block content %}
+
+    <form id="formTask" class="form-group has-feedback" method="POST" style="margin-bottom: 25px; color: gray !important;">
+        {% csrf_token %}
+        {% render_field task_form.title class="form-control input-md" id="newTaskInput" placeholder="Add new task" %}
+        <span class="form-control-feedback" style="margin: 7px">
+            <em class="fa fa-lg fa-plus"></em>
+        </span>
+        <div id="formTaskError" class="comment hidden text-danger"></div>
+    </form>
+
     {% for task in todo.tasks.all %}
         <div class="alert bg-primary" role="alert">
             <em class="fa fa-lg fa-square-o">&nbsp;</em>

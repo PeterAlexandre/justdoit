@@ -93,4 +93,30 @@
             })
         });
     </script>
+
+    <!-- Request: Create a new task -->
+    <script>
+        $("#formTask").submit(function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: "http://127.0.0.1:8000/api/v1/task/",
+                type: "POST",
+                data: {
+                    title: $("#newTaskInput").val(),
+                    to_do: {{ todo.pk }}
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data){
+                location.reload()
+            }).fail(function (data) {
+                $("#formTaskError").text(data.error().responseJSON.detail);
+                $("#formTaskError").removeClass("hidden");
+            })
+        });
+    </script>
 {% endblock %}
