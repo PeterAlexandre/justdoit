@@ -27,10 +27,11 @@
     </form>
 
     {% for task in todo.tasks.all %}
+        <div id="deleteTaskError{{ task.id }}" class="comment hidden text-danger"></div>
         <div class="alert bg-primary" role="alert">
             <em class="fa fa-lg fa-square-o">&nbsp;</em>
             {{ task.title }}
-            <a href="#" class="pull-right">
+            <a href="#" class="pull-right" onclick="deleteTask({{ task.id }})">
                 <em class="fa fa-lg fa-trash" aria-hidden="true" style="color: gray !important;"></em>
             </a>
         </div>
@@ -40,4 +41,89 @@
 
     {% include 'todolist/todo_update.html' %}
 
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+        // Request: Edit to do list
+        $("#updateTodolistForm").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: "http://127.0.0.1:8000/api/v1/todo/{{ todo.pk }}/",
+                type: "PUT",
+                data : {title: $("#changedTitle").val()},
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data){
+                location.href = "{% url 'todolist:todo_detail' pk=99999 %}".replace("99999", data.pk);
+            }).fail(function (data) {
+                $("#updateTodolistFormError").text(data.error().responseJSON.detail);
+                $("#updateTodolistFormError").removeClass("hidden");
+            })
+        });
+
+        // Request: Delete to do list
+        $("#deleteTodolistForm").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: "http://127.0.0.1:8000/api/v1/todo/{{ todo.pk }}/",
+                type: "DELETE",
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data){
+                location.href = "{% url 'todolist:home' %}";
+            }).fail(function (data) {
+                $("#deleteTodolistFormError").text(data.error().responseJSON.detail);
+                $("#deleteTodolistFormError").removeClass("hidden");
+            })
+        });
+
+        // Request: Create a new task
+        $("#formTask").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: "http://127.0.0.1:8000/api/v1/task/",
+                type: "POST",
+                data: {
+                    title: $("#newTaskInput").val(),
+                    to_do: {{ todo.pk }}
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data){
+                location.reload()
+            }).fail(function (data) {
+                $("#formTaskError").text(data.error().responseJSON.detail);
+                $("#formTaskError").removeClass("hidden");
+            })
+        });
+
+        function deleteTask(taskId) {
+            $.ajax({
+                url: `http://127.0.0.1:8000/api/v1/task/${taskId}/`,
+                type: "DELETE",
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data){
+                location.reload()
+            }).fail(function (data) {
+                // alert(`Task: ${data.error().responseJSON.detail}`);
+                $("#deleteTaskError"+taskId).text(data.error().responseJSON.detail);
+                $("#deleteTaskError"+taskId).removeClass("hidden");
+            })
+        }
+    </script>
 {% endblock %}
