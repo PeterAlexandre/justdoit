@@ -41,3 +41,4 @@ class ToDoListView(LoginRequiredMixin, ListView):
     model = ToDo
     template_name = 'index.html'
     context_object_name = 'todo_list'
+    ordering = ['-updated_at']
