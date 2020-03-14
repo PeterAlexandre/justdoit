@@ -1,9 +1,9 @@
-from django.forms import ModelForm
+from django import forms
 
 from justdoit.todolist.models import ToDo, Task, Tag
 
 
-class ToDoForm(ModelForm):
+class ToDoForm(forms.ModelForm):
     class Meta:
         model = ToDo
         fields = ['title']
@@ -18,13 +18,21 @@ class ToDoForm(ModelForm):
         return super().save(commit)
 
 
-class TaskForm(ModelForm):
+class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ['title']
+        fields = ['title', 'description', 'deadline', 'status']
 
 
-class TagForm(ModelForm):
+class TagForm(forms.ModelForm):
     class Meta:
         model = Tag
         fields = ['title']
+
+
+TaskInlineFormSet = forms.inlineformset_factory(
+    ToDo,
+    Task,
+    fields=TaskForm.Meta.fields,
+    extra=0
+)

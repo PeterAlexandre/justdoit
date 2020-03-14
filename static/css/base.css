@@ -1,3 +1,4 @@
+/* Classes */
 .comment {
     margin-top: 0;
     padding-left: 5px;
@@ -19,4 +20,18 @@
 .parent .dropdown-icon.collapsed:after {
     /* symbol for "collapsed" panels */
     content: "\f107";
+}
+
+/* Id's */
+#task-anchor {
+    color: gray;
+}
+
+#task-anchor:active {
+    text-decoration: none;
+}
+
+#task-anchor:hover, #task-anchor:focus {
+    text-decoration: none;
+    color: #30a5ff;
 }

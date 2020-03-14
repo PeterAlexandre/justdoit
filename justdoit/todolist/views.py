@@ -4,7 +4,7 @@ from django.views.generic import DetailView, ListView
 from django.urls import reverse
 
 from justdoit.todolist.models import ToDo
-from justdoit.todolist.forms import TaskForm
+from justdoit.todolist.forms import TaskForm, TaskInlineFormSet
 
 
 # Authentication views
@@ -28,6 +28,7 @@ class ToDoDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         return super().get_context_data(
             todo_list=self.queryset.exclude(pk=self.object.pk).order_by('-updated_at'),
+            task_formset=TaskInlineFormSet(instance=self.object),
             task_form=TaskForm()
         )
 
