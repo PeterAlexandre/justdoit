@@ -41,7 +41,7 @@
 
             <!-- Modal {{ task }} -->
             <div id="task{{ task.id }}" class="modal fade" role="dialog">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -51,8 +51,22 @@
                         </div>
                         <form class="modal-body">
                             {% csrf_token %}
-                            <div class="form-group">
-                                {% render_field task_form.description class="form-control input-md" placeholder="Write the description here!" %}
+                            <div class="row">
+                                <div class="col-xs-8 col-sm-9 col-md-10">
+                                    <div class="form-group">
+                                        {% render_field task_form.description class="form-control input-md" placeholder="Write the description here!" %}
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 col-sm-3 col-md-2" style="padding-left: 5px !important;">
+                                    <div>
+                                        <strong>Created_at</strong>
+                                    </div>
+                                    <div>{{ task.created_at|date:"SHORT_DATETIME_FORMAT" }}</div>
+                                    <div>
+                                        <strong>Updated_at</strong>
+                                    </div>
+                                    <div>{{ task.updated_at|date:"SHORT_DATETIME_FORMAT" }}</div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 {% render_field task_form.deadline %}
@@ -167,14 +181,13 @@
 
         // Request: Create a new task
         $("#formTask").submit(function (event) {
-            console.log("iniciou");
             event.preventDefault();
             $.ajax({
                 url: "http://127.0.0.1:8000/api/v1/task/",
                 type: "POST",
                 data: {
                     title: $("#newTaskInput").val(),
-                    to_do: "ds"
+                    to_do: {{ todo.pk }}
                 },
                 beforeSend: function (xhr, settings) {
                     if (!safeMethod(settings.type) && !this.crossDomain) {
@@ -182,8 +195,7 @@
                     }
                 }
             }).done(function (data) {
-                console.log($("#formTaskError"));
-                $("#formTaskError").text("teste");
+                location.reload()
             }).fail(function (data) {
                 $("#formTaskError").text(data.error().responseText);
                 $("#formTaskError").removeClass("hidden");
@@ -203,8 +215,8 @@
             }).done(function (data){
                 location.reload()
             }).fail(function (data) {
-                $("#deleteTaskError"+taskId).text(data.error().responseJSON.detail);
-                $("#deleteTaskError"+taskId).removeClass("hidden");
+                $(`#deleteTaskError${taskId}`).text(data.error().responseJSON.detail);
+                $(`#deleteTaskError${taskId}`).removeClass("hidden");
             })
         }
 
