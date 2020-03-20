@@ -28,7 +28,7 @@ class ToDoDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         return super().get_context_data(
             todo_list=self.queryset.exclude(pk=self.object.pk).order_by('-updated_at'),
-            task_formset=TaskInlineFormSet(instance=self.object),
+            task_formset=TaskInlineFormSet(instance=self.object, queryset=self.object.tasks.order_by('-updated_at')),
             task_form=TaskForm()
         )
 
