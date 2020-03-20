@@ -35,3 +35,21 @@
     text-decoration: none;
     color: #30a5ff;
 }
+
+.task-modal-form {
+    border: 1px solid #ddd;
+    box-shadow: none;
+    height: 46px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    border-radius: 4px;
+}
+
+.task-modal-font {
+    font-family: "Montserrat";
+    src: local("Montserrat Regular"), local("Montserrat-Regular"), url("https://fonts.gstatic.com/s/montserrat/v14/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+}

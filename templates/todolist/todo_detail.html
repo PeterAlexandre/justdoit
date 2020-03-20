@@ -19,7 +19,7 @@
 
     <form id="formTask" class="form-group has-feedback" method="POST" style="margin-bottom: 25px; color: gray !important;">
         {% csrf_token %}
-        {% render_field task_form.title class="form-control input-md" id="newTaskInput" placeholder="Add new task" autocomplete="off" %}
+        {% render_field task_form.title class="form-control" id="newTaskInput" placeholder="Add new task" autocomplete="off" %}
         <span class="form-control-feedback" style="margin: 7px">
             <em class="fa fa-lg fa-plus"></em>
         </span>
@@ -42,11 +42,11 @@
             <!-- Modal {{ task }} -->
             <div id="task{{ task.id }}" class="modal fade" role="dialog">
                 <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
+                    <div class="modal-content task-modal-font">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">
-                                {% render_field task_form.title class="form-control input-md" placeholder="Task title" value=task.title autocomplete="off" %}
+                                {% render_field task_form.title class="form-control task-modal-font" placeholder="Task title" value=task.title autocomplete="off" %}
                             </h4>
                         </div>
                         <form class="modal-body">
@@ -54,22 +54,22 @@
                             <div class="row">
                                 <div class="col-xs-8 col-sm-9 col-md-10">
                                     <div class="form-group">
-                                        {% render_field task_form.description class="form-control input-md" placeholder="Write the description here!" %}
+                                        {% render_field task_form.description class="task-modal-form form-control" placeholder="Write the description here!" %}
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-sm-3 col-md-2" style="padding-left: 5px !important;">
                                     <div>
-                                        <strong>Created_at</strong>
+                                        <strong>Created at:</strong>
                                     </div>
-                                    <div>{{ task.created_at|date:"SHORT_DATETIME_FORMAT" }}</div>
+                                    <div style="padding-bottom: 10px;">{{ task.created_at|date:"SHORT_DATETIME_FORMAT" }}</div>
                                     <div>
-                                        <strong>Updated_at</strong>
+                                        <strong>Updated at:</strong>
                                     </div>
                                     <div>{{ task.updated_at|date:"SHORT_DATETIME_FORMAT" }}</div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                {% render_field task_form.deadline %}
+                                {% render_field task_form.deadline class="task-modal-form" %}
                             </div>
                             <div id="updateTaskError{{ task.id }}" class="comment hidden text-danger"></div>
                         </form>
