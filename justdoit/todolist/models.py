@@ -32,13 +32,6 @@ class Task(BaseModel):
     deadline = models.DateTimeField(blank=True, null=True)
     status = models.CharField(max_length=4, choices=STATUS.choices, default='OPEN')
     to_do = models.ForeignKey('ToDo', on_delete=models.CASCADE, related_name='tasks', related_query_name='task')
-    tags = models.ManyToManyField(
-        'Tag',
-        verbose_name='Tags',
-        blank=True,
-        related_name='tasks',
-        related_query_name='task',
-    )
 
     def __str__(self):
         return self.title
@@ -46,10 +39,3 @@ class Task(BaseModel):
     class Meta:
         verbose_name = 'Task'
         verbose_name_plural = 'Tasks'
-
-
-class Tag(BaseModel):
-    COLOR = choices.TagColor
-
-    title = models.CharField(max_length=20)
-    color = models.CharField(max_length=7, choices=COLOR.choices, default='GRA')

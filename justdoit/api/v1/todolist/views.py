@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 
 from justdoit.api.v1.todolist import serializers
-from justdoit.todolist.models import ToDo, Task, Tag
+from justdoit.todolist.models import ToDo, Task
 
 
 class ToDoViewSet(ModelViewSet):
@@ -17,10 +17,4 @@ class ToDoViewSet(ModelViewSet):
 class TaskViewSet(ModelViewSet):
     queryset = Task.objects.order_by('created_at')
     serializer_class = serializers.TaskSerializer
-    permission_classes = (IsAuthenticated,)
-
-
-class TagViewSet(ModelViewSet):
-    queryset = Tag.objects.order_by('pk')
-    serializer_class = serializers.TagSerializer
     permission_classes = (IsAuthenticated,)

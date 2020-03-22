@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
-from justdoit.todolist.models import ToDo, Task, Tag
+from justdoit.todolist.models import ToDo, Task
 
 
 class ToDoSerializer(ModelSerializer):
@@ -13,9 +13,3 @@ class TaskSerializer(ModelSerializer):
     class Meta:
         model = Task
         fields = ['pk', 'title', 'description', 'deadline', 'status', 'to_do', 'tags']
-
-
-class TagSerializer(ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = ['pk', 'title', 'color']

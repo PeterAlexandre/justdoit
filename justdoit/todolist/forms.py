@@ -1,6 +1,6 @@
 from django import forms
 
-from justdoit.todolist.models import ToDo, Task, Tag
+from justdoit.todolist.models import ToDo, Task
 
 
 class ToDoForm(forms.ModelForm):
@@ -22,12 +22,6 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ['title', 'description', 'deadline', 'status']
-
-
-class TagForm(forms.ModelForm):
-    class Meta:
-        model = Tag
-        fields = ['title']
 
 
 TaskInlineFormSet = forms.inlineformset_factory(
