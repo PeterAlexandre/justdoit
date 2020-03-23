@@ -12,4 +12,4 @@ class ToDoSerializer(ModelSerializer):
 class TaskSerializer(ModelSerializer):
     class Meta:
         model = Task
-        fields = ['pk', 'title', 'description', 'deadline', 'status', 'to_do', 'tags']
+        fields = ['pk', 'title', 'description', 'deadline', 'status', 'to_do']

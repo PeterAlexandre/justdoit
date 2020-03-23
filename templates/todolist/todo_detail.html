@@ -83,6 +83,19 @@
         {% endwith %}
     {% endfor %}
 
+    <div>Completed tasks</div>
+    {% for task in completed_tasks %}
+        <div class="alert bg-primary">
+            <a href="#" id="task-anchor">
+                <em class="fa fa-lg fa-square-o">&nbsp;</em>
+            </a>
+            {{ task.title }}
+            <a href="#" class="pull-right">
+                <em class="fa fa-lg fa-trash" aria-hidden="true" style="color: gray !important;"></em>
+            </a>
+        </div>
+    {% endfor %}
+
     <!-- Modal to edit and update todolist -->
     <div id="updateTodolist" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -249,6 +262,29 @@
                 $(`#updateTaskError${taskId}`).text("Campo de data inválido");
                 $(`#updateTaskError${taskId}`).removeClass("hidden");
             }
+        }
+
+        // Request: Complete task
+        function completeTask(taskId, taskPrefix) {
+            $.ajax({
+                url: `http://127.0.0.1:8000/api/v1/task/${taskId}/`,
+                type: "PUT",
+                data : {
+                    to_do: {{ todo.pk }},
+                    title: $(`#id_${taskPrefix}-title`).val(),
+                    status: "DONE"
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data) {
+                location.reload()
+            }).fail(function (data) {
+                $(`#updateTaskError${taskId}`).text(data.error().responseText);
+                $(`#updateTaskError${taskId}`).removeClass("hidden");
+            })
         }
     </script>
 {% endblock %}

@@ -25,6 +25,7 @@
 /* Id's */
 #task-anchor {
     color: gray;
+    padding-right: 10px;
 }
 
 #task-anchor:active {
