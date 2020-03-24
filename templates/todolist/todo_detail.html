@@ -12,6 +12,7 @@
 
 {% block dropdown_itens %}
     <li><a href="#" data-toggle="modal" data-target="#updateTodolist">Change name</a></li>
+    <li><a href="#" data-toggle="modal" data-target="#completedTasks">Completed tasks</a></li>
     <li><a href="#" data-toggle="modal" data-target="#confirmDelete">Delete list</a></li>
 {% endblock %}
 
@@ -28,9 +29,9 @@
 
     {% for task_form in task_formset %}
         {% with task=task_form.instance %}
-            <div id="deleteTaskError{{ task.id }}" class="comment hidden text-danger"></div>
+            <div id="taskError{{ task.id }}" class="comment hidden text-danger"></div>
             <div class="alert bg-primary" data-toggle="modal" data-target="#task{{ task.id }}">
-                <a href="#" id="task-anchor" onclick="completeTask({{ task.id }})">
+                <a href="#" id="task-anchor" onclick='completeTask({{ task.id }}, "{{ task_form.prefix }}")'>
                     <em class="fa fa-lg fa-square-o">&nbsp;</em>
                 </a>
                 {{ task.title }}
@@ -83,19 +84,6 @@
         {% endwith %}
     {% endfor %}
 
-    <div>Completed tasks</div>
-    {% for task in completed_tasks %}
-        <div class="alert bg-primary">
-            <a href="#" id="task-anchor">
-                <em class="fa fa-lg fa-square-o">&nbsp;</em>
-            </a>
-            {{ task.title }}
-            <a href="#" class="pull-right">
-                <em class="fa fa-lg fa-trash" aria-hidden="true" style="color: gray !important;"></em>
-            </a>
-        </div>
-    {% endfor %}
-
     <!-- Modal to edit and update todolist -->
     <div id="updateTodolist" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -140,6 +128,34 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <button class="btn btn-danger">Delete</button>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal completed tasks list -->
+    <div id="completedTasks" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Completed tasks</h4>
+                </div>
+                <div class="modal-body">
+                    {% for task in completed_tasks %}
+                        <div class="alert bg-primary" id="completed-task-{{ task.id }}" >
+                            <a href="#" id="task-anchor" onclick="restoreCompletedTask({{ task.id }})">
+                                <em class="fa fa-lg fa-check-square-o">&nbsp;</em>
+                            </a>
+                            <span id="completed-task-{{ task.id }}-title" style="text-decoration: line-through;" >{{ task.title }}</span>
+                            <a href="#" class="pull-right" onclick="deleteCompletedTask({{ task.id }})">
+                                <em class="fa fa-lg fa-trash" aria-hidden="true" style="color: gray !important;"></em>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.reload()">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -228,8 +244,8 @@
             }).done(function (data){
                 location.reload()
             }).fail(function (data) {
-                $(`#deleteTaskError${taskId}`).text(data.error().responseJSON.detail);
-                $(`#deleteTaskError${taskId}`).removeClass("hidden");
+                $(`#taskError${taskId}`).text(data.error().responseJSON.detail);
+                $(`#taskError${taskId}`).removeClass("hidden");
             })
         }
 
@@ -282,8 +298,47 @@
             }).done(function (data) {
                 location.reload()
             }).fail(function (data) {
-                $(`#updateTaskError${taskId}`).text(data.error().responseText);
-                $(`#updateTaskError${taskId}`).removeClass("hidden");
+                $(`#taskError${taskId}`).text(data.error().responseText);
+                $(`#taskError${taskId}`).removeClass("hidden");
+            })
+        }
+
+        function restoreCompletedTask(taskId) {
+            $.ajax({
+                url: `http://127.0.0.1:8000/api/v1/task/${taskId}/`,
+                type: "PUT",
+                data : {
+                    to_do: {{ todo.pk }},
+                    title: $(`#completed-task-${taskId}-title`).text(),
+                    status: "OPEN"
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data) {
+                $(`#completed-task-${taskId}`).hide();
+            }).fail(function (data) {
+                $(`#taskError${taskId}`).text(data.error().responseText);
+                $(`#taskError${taskId}`).removeClass("hidden");
+            })
+        }
+
+        function deleteCompletedTask(taskId) {
+            $.ajax({
+                url: `http://127.0.0.1:8000/api/v1/task/${taskId}/`,
+                type: "DELETE",
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data){
+                $(`#completed-task-${taskId}`).hide();
+            }).fail(function (data) {
+                $(`#taskError${taskId}`).text(data.error().responseJSON.detail);
+                $(`#taskError${taskId}`).removeClass("hidden");
             })
         }
     </script>
