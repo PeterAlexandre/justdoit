@@ -35,7 +35,7 @@ TaskInlineFormSet = forms.inlineformset_factory(
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['profile']
+        fields = ['picture']
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
