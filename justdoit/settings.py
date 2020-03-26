@@ -5,8 +5,8 @@ import environ
 env = environ.Env()
 BASE_DIR = environ.Path(__file__) - 2
 
-if exists(BASE_DIR.path('.env')):
-    env.read_env(f'{BASE_DIR.path(".env")}')
+if exists(BASE_DIR('.env')):
+    env.read_env(BASE_DIR('.env'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -53,7 +53,7 @@ ROOT_URLCONF = 'justdoit.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [f'{BASE_DIR.path("templates")}'],
+        'DIRS': [BASE_DIR("templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,10 +121,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = f'{BASE_DIR.path("staticfiles")}'
+STATIC_ROOT = BASE_DIR('staticfiles')
 STATICFILES_DIRS = (
-    f'{BASE_DIR.path("static")}',
+    BASE_DIR('static'),
 )
+
+MEDIA_ROOT = BASE_DIR('mediafiles')
+MEDIA_URL = '/media/'
 
 # Django Rest Framework
 REST_FRAMEWORK = {

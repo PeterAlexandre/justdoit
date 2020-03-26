@@ -1,6 +1,6 @@
 from django import forms
 
-from justdoit.todolist.models import ToDo, Task
+from justdoit.todolist.models import ToDo, Task, Profile
 
 
 class ToDoForm(forms.ModelForm):
@@ -30,3 +30,18 @@ TaskInlineFormSet = forms.inlineformset_factory(
     fields=TaskForm.Meta.fields,
     extra=0
 )
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['profile']
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
+    def save(self, commit=True):
+        if not self.instance.pk:
+            self.instance.user = self.user
+        return super().save(commit)

@@ -39,3 +39,11 @@ class Task(BaseModel):
     class Meta:
         verbose_name = 'Task'
         verbose_name_plural = 'Tasks'
+
+
+class Profile(BaseModel):
+    picture = models.ImageField(upload_to='uploads/')
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username if self.user else 'Undefine profile'
