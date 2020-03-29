@@ -1,10 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView as DJLoginView
-from django.views.generic import DetailView, ListView
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.urls import reverse
+from django.views.generic import DetailView, ListView
+from django.views import View
 
 from justdoit.todolist.models import ToDo
-from justdoit.todolist.forms import TaskForm, TaskInlineFormSet
+from justdoit.todolist.forms import TaskForm, TaskInlineFormSet, ProfileForm
 
 
 # Authentication views
@@ -47,3 +49,12 @@ class ToDoListView(LoginRequiredMixin, ListView):
     template_name = 'index.html'
     context_object_name = 'todo_list'
     ordering = ['-updated_at']
+
+
+class ProfileView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        form = ProfileForm(instance=self.request.user.profile, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('todolist:home'))
+        return HttpResponseBadRequest()

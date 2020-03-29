@@ -3,7 +3,11 @@
 <div id="sidebar" class="col-sm-3 col-lg-2 sidebar parent">
     <div class="profile-sidebar" data-toggle="collapse" href="#logout" style="cursor: pointer;">
         <div class="profile-userpic">
-            <img src="{% static 'img/profile.png' %}" class="img-responsive" alt="">
+            {% if user.profile.picture %}
+                <img src="{{ user.profile.picture.url }}" class="img-responsive" alt="">
+            {% else %}
+                <img src="{% static 'img/profile.png' %}" class="img-responsive" alt="">
+            {% endif %}
         </div>
         <div class="profile-usertitle">
         {% if user.first_name %}
@@ -19,6 +23,11 @@
         <div class="clear"></div>
     </div>
     <ul class="children collapse nav menu" id="logout" style="background-color: #f1f4f7; margin: unset;">
+        <li>
+            <a href="#" data-toggle="modal" data-target="#changeAvatar">
+                <span class="fa fa-sign-out">&nbsp;</span> Change avatar
+            </a>
+        </li>
         <li>
             <a href="{% url 'logout' %}">
                 <span class="fa fa-sign-out">&nbsp;</span> Logout
@@ -47,3 +56,51 @@
         {% endfor %}
     </ul>
 </div><!--/.sidebar-->
+
+<div id="changeAvatar" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Change avatar</h4>
+            </div>
+            <form class="modal-body" id="chageAvatarForm" method="POST" action="{% url 'todolist:profile' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    {% render_field profile_create.picture id="image_file" %}
+                    <div id="changePictureError" class="comment hidden text-danger"></div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" form="chageAvatarForm">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Request: Change the profile picture
+    // $("#chageAvatarForm").submit(function (event) {
+    //     event.preventDefault();
+    //     var file_data = $('#image_file').prop('files')[0];
+    //     var form_data = new FormData();
+    //     form_data.append('file', file_data);
+
+    //     $.ajax({
+    //         url: "http://127.0.0.1:8000/api/v1/profile/{{ user.profile.pk }}",
+    //         type: "PUT",
+    //         data : form_data,
+    //         beforeSend: function (xhr, settings) {
+    //             if (!safeMethod(settings.type) && !this.crossDomain) {
+    //                 xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+    //             }
+    //         }
+    //     }).done(function (data) {
+    //         location.reload();
+    //     }).fail(function (data) {
+    //         $("#changePictureError").text("Image file not uploaded!");
+    //         $("#changePictureError").removeClass("hidden");
+    //     })
+    // });
+</script>

@@ -36,12 +36,3 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['picture']
-
-    def __init__(self, user, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.user = user
-
-    def save(self, commit=True):
-        if not self.instance.pk:
-            self.instance.user = self.user
-        return super().save(commit)

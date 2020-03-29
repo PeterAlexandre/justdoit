@@ -41,9 +41,21 @@ class Task(BaseModel):
         verbose_name_plural = 'Tasks'
 
 
+def profile_picture(instance, filename):
+    return f'profile/{instance.pk}.{filename.split(".")[-1]}'
+
+
 class Profile(BaseModel):
-    picture = models.ImageField(upload_to='uploads/')
+    picture = models.ImageField(upload_to=profile_picture, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username if self.user else 'Undefine profile'
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            print('test')
+            profile = Profile.objects.only('picture').get(pk=self.pk)
+            if profile.picture:
+                profile.picture.delete(False)
+        super().save(*args, **kwargs)
