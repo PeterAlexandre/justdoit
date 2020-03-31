@@ -1,11 +1,14 @@
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView as DJLoginView
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.urls import reverse
-from django.views.generic import DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView
 from django.views import View
 
-from justdoit.todolist.models import ToDo
+from justdoit.todolist.models import ToDo, Profile
 from justdoit.todolist.forms import TaskForm, TaskInlineFormSet, ProfileForm
 
 
@@ -17,8 +20,23 @@ class LoginView(DJLoginView):
     def get_success_url(self):
         url = super().get_success_url()
         if self.request.path == url:
-            return reverse('home')
+            return reverse('todolist:home')
         return url
+
+
+class UserCreateView(CreateView):
+    template_name = 'register.html'
+    model = User
+    form_class = UserCreationForm
+
+    def get_success_url(self):
+        return reverse('todolist:home')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        Profile.objects.create(user=form.instance)
+        login(self.request, form.instance)
+        return response
 
 
 # ToDo View
