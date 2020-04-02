@@ -68,7 +68,6 @@
                 {% csrf_token %}
                 <div class="form-group">
                     {% render_field profile_create.picture id="image_file" %}
-                    <div id="changePictureError" class="comment hidden text-danger"></div>
                 </div>
             </form>
             <div class="modal-footer">
@@ -78,29 +77,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    // Request: Change the profile picture
-    // $("#chageAvatarForm").submit(function (event) {
-    //     event.preventDefault();
-    //     var file_data = $('#image_file').prop('files')[0];
-    //     var form_data = new FormData();
-    //     form_data.append('file', file_data);
-
-    //     $.ajax({
-    //         url: "http://127.0.0.1:8000/api/v1/profile/{{ user.profile.pk }}",
-    //         type: "PUT",
-    //         data : form_data,
-    //         beforeSend: function (xhr, settings) {
-    //             if (!safeMethod(settings.type) && !this.crossDomain) {
-    //                 xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
-    //             }
-    //         }
-    //     }).done(function (data) {
-    //         location.reload();
-    //     }).fail(function (data) {
-    //         $("#changePictureError").text("Image file not uploaded!");
-    //         $("#changePictureError").removeClass("hidden");
-    //     })
-    // });
-</script>

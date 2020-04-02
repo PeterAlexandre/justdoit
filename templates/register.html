@@ -6,27 +6,57 @@
 {% block sidebar %}{% endblock %}
 
 {% block body %}
-    <div class="row" style="margin: 200px;">
-        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4 ">
+    <div class="row" style="margin-top: 70px;">
+        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
             <div class="thumbnail" style="background-color: transparent; border: unset;">
                 <img src="{% static 'img/logo_icon.png' %}" class="img-responsive" style="width: 200px;">
             </div>
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">Sign up</div>
                 <div class="panel-body">
-
                     <form method="POST" role="form">
                         {% csrf_token %}
                         <fieldset>
                             {{ form.non_fields_errors }}
                             <div class="form-group">
-                                {{ form.as_p }}
+                                <label>{{ form.username.label }}</label>
+                                {{ form.username.errors }}
+                                {% render_field form.username class="form-control form-control-user" placeholder="JohnDoe07" %}
                             </div>
-                            <button class="btn btn-primary">Login</button>
+                            <div class="form-group">
+                                <label>{{ form.email.label }}</label>
+                                {{ form.email.errors }}
+                                {% render_field form.email class="form-control form-control-user" placeholder="john.doe@gmail.com" %}
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>{{ form.first_name.label }}</label>
+                                    {{ form.first_name.errors }}
+                                    {% render_field form.first_name class="form-control form-control-user" placeholder="John" %}
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>{{ form.last_name.label }}</label>
+                                    {{ form.last_name.errors }}
+                                    {% render_field form.last_name class="form-control form-control-user" placeholder="Doe" %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>{{ form.password1.label }}</label>
+                                {{ form.password1.errors }}
+                                {% render_field form.password1 class="form-control form-control-user" placeholder="*********" %}
+                            </div>
+                            <div class="form-group">
+                                <label>{{ form.password2.label }}</label>
+                                {{ form.password2.errors }}
+                                {% render_field form.password2 class="form-control form-control-user" placeholder="*********" %}
+                            </div>
+                            <button class="btn btn-primary large-button">Sign up</a>
                         </fieldset>
                     </form>
-
                 </div>
+            </div>
+            <div class="alert bg-primary col-md-12 text-center">
+                Already have an account? <a href="{% url 'login' %}" class="text-center">Sign in instead</a>.
             </div>
         </div><!-- /.col-->
     </div><!-- /.row -->

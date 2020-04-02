@@ -54,3 +54,8 @@
     font-style: normal;
     font-weight: 400;
 }
+
+.large-button {
+    margin-top: 15px;
+    width: 100%;
+}

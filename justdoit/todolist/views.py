@@ -1,5 +1,4 @@
 from django.contrib.auth import login
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView as DJLoginView
@@ -9,7 +8,7 @@ from django.views.generic import CreateView, DetailView, ListView
 from django.views import View
 
 from justdoit.todolist.models import ToDo, Profile
-from justdoit.todolist.forms import TaskForm, TaskInlineFormSet, ProfileForm
+from justdoit.todolist.forms import TaskForm, TaskInlineFormSet, ProfileForm, UserCreationForm
 
 
 # Authentication views

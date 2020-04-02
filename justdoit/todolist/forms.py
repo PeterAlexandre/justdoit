@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm as DJUserCreationForm
 
 from justdoit.todolist.models import ToDo, Task, Profile
 
@@ -36,3 +37,8 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['picture']
+
+
+class UserCreationForm(DJUserCreationForm):
+    class Meta(DJUserCreationForm.Meta):
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
