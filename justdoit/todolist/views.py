@@ -67,6 +67,11 @@ class ToDoListView(LoginRequiredMixin, ListView):
     context_object_name = 'todo_list'
     ordering = ['-updated_at']
 
+    def get_queryset(self):
+        if self.queryset is None:
+            self.queryset = super().get_queryset().filter(owner=self.request.user)
+        return self.queryset
+
 
 class ProfileView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
