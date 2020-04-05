@@ -12,5 +12,5 @@ urlpatterns = [
     path('register/', UserCreateView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('todolist/', include('justdoit.todolist.urls')),
+    path('', include('justdoit.todolist.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
