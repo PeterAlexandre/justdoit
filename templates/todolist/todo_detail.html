@@ -1,5 +1,5 @@
 {% extends 'simple_page.html' %}
-{% load static widget_tweaks %}
+{% load static widget_tweaks i18n %}
 
 <!-- simple_page blocks -->
 {% block html_title %}
@@ -11,16 +11,17 @@
 {% endblock %}
 
 {% block dropdown_itens %}
-    <li><a href="#" data-toggle="modal" data-target="#updateTodolist">Change name</a></li>
-    <li><a href="#" data-toggle="modal" data-target="#completedTasks">Completed tasks</a></li>
-    <li><a href="#" data-toggle="modal" data-target="#confirmDelete">Delete list</a></li>
+    <li><a href="#" data-toggle="modal" data-target="#updateTodolist">{% trans 'Change name' %}</a></li>
+    <li><a href="#" data-toggle="modal" data-target="#completedTasks">{% trans 'Completed tasks' %}</a></li>
+    <li><a href="#" data-toggle="modal" data-target="#confirmDelete">{% trans 'Delete list' %}</a></li>
 {% endblock %}
 
 {% block content %}
 
     <form id="formTask" class="form-group has-feedback" method="POST" style="margin-bottom: 25px; color: gray !important;">
         {% csrf_token %}
-        {% render_field task_form.title class="form-control" id="newTaskInput" placeholder="Add new task" autocomplete="off" %}
+        {% trans 'Add new task' as add_task %}
+        {% render_field task_form.title class="form-control" id="newTaskInput" placeholder=add_task autocomplete="off" %}
         <span class="form-control-feedback" style="margin: 7px">
             <em class="fa fa-lg fa-plus"></em>
         </span>
@@ -47,7 +48,8 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">
-                                {% render_field task_form.title class="form-control task-modal-font" placeholder="Task title" value=task.title autocomplete="off" %}
+                                {% trans 'Task title' as task_title %}
+                                {% render_field task_form.title class="form-control task-modal-font" placeholder=task_title value=task.title autocomplete="off" %}
                             </h4>
                         </div>
                         <form class="modal-body">
@@ -55,16 +57,17 @@
                             <div class="row">
                                 <div class="col-xs-8 col-sm-9 col-md-10">
                                     <div class="form-group">
-                                        {% render_field task_form.description class="task-modal-form form-control" placeholder="Write the description here!" %}
+                                        {% trans 'Write the description here!' as task_description %}
+                                        {% render_field task_form.description class="task-modal-form form-control" placeholder=task_description %}
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-sm-3 col-md-2" style="padding-left: 5px !important;">
                                     <div>
-                                        <strong>Created at:</strong>
+                                        <strong>{% trans 'Created at:' %}</strong>
                                     </div>
                                     <div style="padding-bottom: 10px;">{{ task.created_at|date:"SHORT_DATETIME_FORMAT" }}</div>
                                     <div>
-                                        <strong>Updated at:</strong>
+                                        <strong>{% trans 'Updated at:' %}</strong>
                                     </div>
                                     <div>{{ task.updated_at|date:"SHORT_DATETIME_FORMAT" }}</div>
                                 </div>
@@ -75,8 +78,8 @@
                             <div id="updateTaskError{{ task.id }}" class="comment hidden text-danger"></div>
                         </form>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button class="btn btn-primary" data-prefix="{{ task_form.prefix }}" onclick='updateTask({{ task.id }}, "{{ task_form.prefix }}")'>Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
+                            <button class="btn btn-primary" data-prefix="{{ task_form.prefix }}" onclick='updateTask({{ task.id }}, "{{ task_form.prefix }}")'>{% trans 'Save' %}</button>
                         </div>
                     </div>
                 </div>
@@ -90,18 +93,19 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Change name</h4>
+                    <h4 class="modal-title">{% trans 'Change name' %}</h4>
                 </div>
                 <form class="modal-body" id="updateTodolistForm" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
-                        {% render_field todo_create.title class="form-control" placeholder="List title" value=todo.title id="changedTitle" %}
+                        {% trans 'List title' as list_title %}
+                        {% render_field todo_create.title class="form-control" placeholder=list_title value=todo.title id="changedTitle" %}
                         <div id="updateTodolistFormError" class="comment hidden text-danger"></div>
                     </div>
                 </form>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button class="btn btn-primary" form="updateTodolistForm">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
+                    <button class="btn btn-primary" form="updateTodolistForm">{% trans 'Save' %}</button>
                 </div>
             </div>
         </div>
@@ -113,20 +117,20 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Are you sure?</h4>
+                    <h4 class="modal-title">{% trans 'Are you sure?' %}</h4>
                 </div>
                 <div class="modal-body">
                     <p>
                         <em class="fa fa-lg fa-warning">&nbsp;</em>
-                            You're about to delete <strong>{{ todo.title }}</strong>. <span class="text-danger">This action cannot be undone!</span>
+                        {% trans "You're about to delete " %}<strong>{{ todo.title }}</strong>. <span class="text-danger">{% trans 'This action cannot be undone!' %}</span>
                     </p>
                     <div id="deleteTodolistFormError" class="comment hidden text-danger"></div>
 
                 </div>
                 <form class="modal-footer" id="deleteTodolistForm" method="POST">
                     {% csrf_token %}
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
+                    <button class="btn btn-danger">{% trans 'Delete' %}</button>
                 </form>
             </div>
         </div>
@@ -138,7 +142,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Completed tasks</h4>
+                    <h4 class="modal-title">{% trans 'Completed tasks' %}</h4>
                 </div>
                 <div class="modal-body">
                     {% for task in completed_tasks %}
@@ -152,11 +156,11 @@
                             </a>
                         </div>
                     {% empty %}
-                        <span>You don't have <strong>completed tasks</strong> in this list.</span>
+                        <span>{% trans "You don't have " %}<strong>{% trans 'completed tasks' %}</strong>{% trans ' in this list.' %}</span>
                     {% endfor %}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.reload()">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.reload()">{% trans 'Close' %}</button>
                 </div>
             </div>
         </div>
@@ -253,17 +257,21 @@
 
         // Request: Update task
         function updateTask(taskId, taskPrefix) {
-            var date = $(`#id_${taskPrefix}-deadline`).val().replace( /(\d{2})\/(\d{2})\/(\d{4}) (\d{2}:\d{2}:\d{2})/, "$3-$2-$1T$4");
+            let date = $(`#id_${taskPrefix}-deadline`).val();
 
-            if (date.length == "YYYY/MM/DD HH:mm:ss".length) {
-                $.ajax({
+            if (date.length != 0 && date.length != "YYYY/MM/DD HH:mm:ss".length) {
+                $(`#updateTaskError${taskId}`).text('{% trans "Invalid date field." %}');
+                $(`#updateTaskError${taskId}`).removeClass("hidden");
+                return
+            }
+            $.ajax({
                     url: `http://127.0.0.1:8000/api/v1/task/${taskId}/`,
                     type: "PUT",
                     data : {
                         to_do: {{ todo.pk }},
                         title: $(`#id_${taskPrefix}-title`).val(),
                         description: $(`#id_${taskPrefix}-description`).val(),
-                        deadline: $(`#id_${taskPrefix}-deadline`).val().replace( /(\d{2})\/(\d{2})\/(\d{4}) (\d{2}:\d{2}:\d{2})/, "$3-$2-$1T$4")
+                        deadline: date.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}:\d{2}:\d{2})/, "$3-$2-$1T$4")
                     },
                     beforeSend: function (xhr, settings) {
                         if (!safeMethod(settings.type) && !this.crossDomain) {
@@ -276,10 +284,6 @@
                     $(`#updateTaskError${taskId}`).text(data.error().responseText);
                     $(`#updateTaskError${taskId}`).removeClass("hidden");
                 })
-            } else {
-                $(`#updateTaskError${taskId}`).text("Campo de data inválido");
-                $(`#updateTaskError${taskId}`).removeClass("hidden");
-            }
         }
 
         // Request: Complete task

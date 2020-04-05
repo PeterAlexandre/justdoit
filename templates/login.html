@@ -1,7 +1,7 @@
 {% extends 'simple_page.html' %}
-{% load static widget_tweaks %}
+{% load static widget_tweaks i18n %}
 
-{% block html_title %}- Login{% endblock %}
+{% block html_title %}- {% trans 'Login' %}{% endblock %}
 
 {% block sidebar %}{% endblock %}
 
@@ -12,7 +12,7 @@
                 <img src="{% static 'img/logo_icon.png' %}" class="img-responsive" style="width: 200px;">
             </div>
             <div class="login-panel panel panel-default">
-                <div class="panel-heading">Login</div>
+                <div class="panel-heading">{% trans 'Login' %}</div>
                 <div class="panel-body">
                     <form method="POST" role="form">
                         {% csrf_token %}
@@ -28,13 +28,13 @@
                                 {{ form.password.errors }}
                                 {% render_field form.password class="form-control form-control-user" %}
                             </div>
-                            <button class="btn btn-primary large-button">Login</button>
+                            <button class="btn btn-primary large-button">{% trans 'Login' %}</button>
                         </fieldset>
                     </form>
                 </div>
             </div>
             <div class="alert bg-primary col-md-12 text-center">
-                New to Justdoit? <a href="{% url 'register' %}" class="text-center">Create a new account</a>.
+                {% trans 'New to Justdoit?' %} <a href="{% url 'register' %}" class="text-center">{% trans 'Create a new account' %}</a>.
             </div>
         </div><!-- /.col-->
     </div><!-- /.row -->

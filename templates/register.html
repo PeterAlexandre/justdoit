@@ -1,7 +1,7 @@
 {% extends 'simple_page.html' %}
-{% load static widget_tweaks %}
+{% load static widget_tweaks i18n %}
 
-{% block html_title %}- Sign up{% endblock %}
+{% block html_title %}- {% trans 'Sign up' %}{% endblock %}
 
 {% block sidebar %}{% endblock %}
 
@@ -12,7 +12,7 @@
                 <img src="{% static 'img/logo_icon.png' %}" class="img-responsive" style="width: 200px;">
             </div>
             <div class="login-panel panel panel-default">
-                <div class="panel-heading">Sign up</div>
+                <div class="panel-heading">{% trans 'Sign up' %}</div>
                 <div class="panel-body">
                     <form method="POST" role="form">
                         {% csrf_token %}
@@ -50,13 +50,13 @@
                                 {{ form.password2.errors }}
                                 {% render_field form.password2 class="form-control form-control-user" placeholder="*********" %}
                             </div>
-                            <button class="btn btn-primary large-button">Sign up</a>
+                            <button class="btn btn-primary large-button">{% trans 'Sign up' %}</a>
                         </fieldset>
                     </form>
                 </div>
             </div>
             <div class="alert bg-primary col-md-12 text-center">
-                Already have an account? <a href="{% url 'login' %}" class="text-center">Sign in instead</a>.
+                {% trans 'Already have an account?' %} <a href="{% url 'login' %}" class="text-center">{% trans 'Login instead' %}</a>.
             </div>
         </div><!-- /.col-->
     </div><!-- /.row -->

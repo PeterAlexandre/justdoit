@@ -106,6 +106,12 @@ LOGOUT_REDIRECT_URL = 'todolist:home'
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
+LOCALE_PATHS = [BASE_DIR('locale')]
+LANGUAGES = [
+    ('pt-br', 'Português do Brasil'),
+    ('en', 'English')
+]
+
 LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'America/Maceio'
