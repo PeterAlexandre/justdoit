@@ -1,0 +1,55 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+
+{% block body %}
+    {% block sidebar %}{% include 'components/sidebar.html' %}{% endblock %}
+
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+            <div class="col-xs-6">
+                <h1 class="page-header">{% block page_title %}{% endblock %}</h1>
+            </div>
+            {% if  todo %}
+                <div class="col-xs-6">
+                    <div class="pull-right dropdown" style="margin-top: 20px; margin-right: 2px;">
+                        <a class="btn dropdown-toggle" type="button" style="color: black;" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="sr-only">{% trans 'Actions' %}</span>
+                            <i class="fa fa-lg fa-ellipsis-v"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            {% block dropdown_itens %}{% endblock %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        {% block content %}{% endblock %}
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+    <!-- Request: Create a new todo list  -->
+    <script>
+        $("#formTodo").submit(function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: "http://127.0.0.1:8000/api/v1/todo/",
+                type: "POST",
+                data: {title: $("#id_title").val()},
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data){
+                location.href = "{% url 'todolist:todo_detail' pk=99999 %}".replace("99999", data.pk);
+            }).fail(function (data) {
+                $("#formTodoError").text(data.error().responseJSON.detail);
+                $("#formTodoError").removeClass("hidden");
+            })
+        });
+    </script>
+{% endblock %}

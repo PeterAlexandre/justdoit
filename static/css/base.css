@@ -1,0 +1,61 @@
+/* Classes */
+.comment {
+    margin-top: 0;
+    padding-left: 5px;
+    font-size: 12px;
+}
+
+.dropdown-icon {
+    display: inline;
+    padding: 0;
+    color: #AAA;
+
+}
+
+.parent .dropdown-icon:after {
+    font-family: 'FontAwesome';
+    content: "\f106";
+}
+
+.parent .dropdown-icon.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\f107";
+}
+
+/* Id's */
+#task-anchor {
+    color: gray;
+    padding-right: 10px;
+}
+
+#task-anchor:active {
+    text-decoration: none;
+}
+
+#task-anchor:hover, #task-anchor:focus {
+    text-decoration: none;
+    color: #30a5ff;
+}
+
+.task-modal-form {
+    border: 1px solid #ddd;
+    box-shadow: none;
+    height: 46px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    border-radius: 4px;
+}
+
+.task-modal-font {
+    font-family: "Montserrat";
+    src: local("Montserrat Regular"), local("Montserrat-Regular"), url("https://fonts.gstatic.com/s/montserrat/v14/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+}
+
+.large-button {
+    margin-top: 15px;
+    width: 100%;
+}

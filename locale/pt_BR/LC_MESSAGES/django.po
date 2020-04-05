@@ -1,0 +1,217 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-04 21:17-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: justdoit/todolist/choices.py:6
+msgid "Open"
+msgstr "Pendente"
+
+#: justdoit/todolist/choices.py:7
+msgid "Done"
+msgstr "Concluída"
+
+#: justdoit/todolist/models.py:9
+msgid "Created at"
+msgstr "Criado em"
+
+#: justdoit/todolist/models.py:10
+msgid "Updated at"
+msgstr "Atualizado em"
+
+#: justdoit/todolist/models.py:17 justdoit/todolist/models.py:31
+msgid "Title"
+msgstr "Título"
+
+#: justdoit/todolist/models.py:18
+msgid "Owner"
+msgstr "Dono"
+
+#: justdoit/todolist/models.py:24 templates/index.html:9
+msgid "Todolist"
+msgstr "Lista de tarefas"
+
+#: justdoit/todolist/models.py:25
+msgid "Todolists"
+msgstr "Listas de tarefas"
+
+#: justdoit/todolist/models.py:32
+msgid "Description"
+msgstr "Descrição"
+
+#: justdoit/todolist/models.py:33
+msgid "Deadline"
+msgstr "Prazo"
+
+#: justdoit/todolist/models.py:34
+msgid "Status"
+msgstr "Situação"
+
+#: justdoit/todolist/models.py:41
+msgid "Task"
+msgstr "Tarefa"
+
+#: justdoit/todolist/models.py:42
+msgid "Tasks"
+msgstr "Tarefas"
+
+#: justdoit/todolist/models.py:50
+msgid "Picture"
+msgstr "Imagem"
+
+#: justdoit/todolist/models.py:54
+msgid "Undefine profile"
+msgstr "Perfil inexistente"
+
+#: templates/components/sidebar.html:19
+msgid "Settings"
+msgstr "Configurações"
+
+#: templates/components/sidebar.html:28 templates/components/sidebar.html:66
+msgid "Change avatar"
+msgstr "Atualizar avatar"
+
+#: templates/components/sidebar.html:33
+msgid "Logout"
+msgstr "Sair"
+
+#: templates/components/sidebar.html:43
+msgid "New todolist"
+msgstr "Nova lista"
+
+#: templates/components/sidebar.html:75 templates/todolist/todo_detail.html:81
+#: templates/todolist/todo_detail.html:107
+#: templates/todolist/todo_detail.html:132
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: templates/components/sidebar.html:76 templates/todolist/todo_detail.html:82
+#: templates/todolist/todo_detail.html:108
+msgid "Save"
+msgstr "Salvar"
+
+#: templates/index.html:13
+msgid "Click here to access the todolists"
+msgstr "Clique aqui para acessar as listas"
+
+#: templates/index.html:15
+msgid "List of todolists"
+msgstr "Todas as listas de tarefas"
+
+#: templates/login.html:4 templates/login.html:15 templates/login.html:31
+msgid "Login"
+msgstr "Entrar"
+
+#: templates/login.html:37
+msgid "New to Justdoit?"
+msgstr "Novo no Justdoit?"
+
+#: templates/login.html:37
+msgid "Create a new account"
+msgstr "Criar nova conta"
+
+#: templates/register.html:4 templates/register.html:15
+#: templates/register.html:53
+msgid "Sign up"
+msgstr "Cadastrar"
+
+#: templates/register.html:59
+msgid "Already have an account?"
+msgstr "Já tem uma conta?"
+
+#: templates/register.html:59
+msgid "Login instead"
+msgstr "Entrar"
+
+#: templates/simple_page.html:16
+msgid "Actions"
+msgstr "Ações"
+
+#: templates/todolist/todo_detail.html:14
+#: templates/todolist/todo_detail.html:96
+msgid "Change name"
+msgstr "Atualizar nome"
+
+#: templates/todolist/todo_detail.html:15
+#: templates/todolist/todo_detail.html:145
+msgid "Completed tasks"
+msgstr "Tarefas concluídas"
+
+#: templates/todolist/todo_detail.html:16
+msgid "Delete list"
+msgstr "Apagar lista"
+
+#: templates/todolist/todo_detail.html:23
+msgid "Add new task"
+msgstr "Adicionar tarefa"
+
+#: templates/todolist/todo_detail.html:51
+msgid "Task title"
+msgstr "Título da tarefa"
+
+#: templates/todolist/todo_detail.html:60
+msgid "Write the description here!"
+msgstr "Escreva a descrição aqui!"
+
+#: templates/todolist/todo_detail.html:66
+msgid "Created at:"
+msgstr "Criado em:"
+
+#: templates/todolist/todo_detail.html:70
+msgid "Updated at:"
+msgstr "Atualizado em:"
+
+#: templates/todolist/todo_detail.html:101
+msgid "List title"
+msgstr "Título da lista"
+
+#: templates/todolist/todo_detail.html:120
+msgid "Are you sure?"
+msgstr "Você tem certeza?"
+
+#: templates/todolist/todo_detail.html:125
+msgid "You're about to delete "
+msgstr "Você vai apagar a lista "
+
+#: templates/todolist/todo_detail.html:125
+msgid "This action cannot be undone!"
+msgstr "Essa ação não pode ser desfeita!"
+
+#: templates/todolist/todo_detail.html:133
+msgid "Delete"
+msgstr "Apagar"
+
+#: templates/todolist/todo_detail.html:159
+msgid "You don't have "
+msgstr "Você não tem"
+
+#: templates/todolist/todo_detail.html:159
+msgid "completed tasks"
+msgstr "tarefas concluídas"
+
+#: templates/todolist/todo_detail.html:159
+msgid " in this list."
+msgstr "nesta lista."
+
+#: templates/todolist/todo_detail.html:163
+msgid "Close"
+msgstr "Fechar"
+
+#: templates/todolist/todo_detail.html:263
+msgid "Invalid date field."
+msgstr "Campo de data inválido."
