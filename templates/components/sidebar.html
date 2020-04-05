@@ -1,0 +1,80 @@
+{% load static widget_tweaks i18n %}
+
+<div id="sidebar" class="col-sm-3 col-lg-2 sidebar parent">
+    <div class="profile-sidebar" data-toggle="collapse" href="#logout" style="cursor: pointer;">
+        <div class="profile-userpic">
+            {% if user.profile.picture %}
+                <img src="{{ user.profile.picture.url }}" class="img-responsive" alt="">
+            {% else %}
+                <img src="{% static 'img/profile.png' %}" class="img-responsive" alt="">
+            {% endif %}
+        </div>
+        <div class="profile-usertitle">
+        {% if user.first_name %}
+            <div class="profile-usertitle-name">{{ user.first_name }} {{ user.last_name }}</div>
+        {% else %}
+            <div class="profile-usertitle-name">User {{ user.pk }}</div>
+        {% endif %}
+            <div class="profile-usertitle-status">
+                {% trans 'Settings' %}
+                <span data-toggle="collapse" href="#logout" class="collapsed dropdown-icon"></span>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <ul class="children collapse nav menu" id="logout" style="background-color: #f1f4f7; margin: unset;">
+        <li>
+            <a href="#" data-toggle="modal" data-target="#changeAvatar">
+                <span class="fa fa-sign-out">&nbsp;</span> {% trans 'Change avatar' %}
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'logout' %}">
+                <span class="fa fa-sign-out">&nbsp;</span> {% trans 'Logout' %}
+            </a>
+        </li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <form id="formTodo" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            {% trans 'New todolist' as add_todo %}
+            {% render_field todo_create.title class="form-control" placeholder=add_todo autocomplete="off" %}
+            <div id="formTodoError" class="comment hidden text-danger"></div>
+        </div>
+    </form>
+
+    <ul class="nav menu">
+        {% include 'components/sidebar-items.html' %}
+        {% for todo in todo_list %}
+            <li>
+                <a href="{% url 'todolist:todo_detail' pk=todo.pk %}">
+                    <em class="fa fa-list-ul" aria-hidden="true">&nbsp;</em> {{ todo.title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div><!--/.sidebar-->
+
+<div id="changeAvatar" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{% trans 'Change avatar' %}</h4>
+            </div>
+            <form class="modal-body" id="chageAvatarForm" method="POST" action="{% url 'todolist:profile' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    {% render_field profile_create.picture id="image_file" %}
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
+                <button class="btn btn-primary" form="chageAvatarForm">{% trans 'Save' %}</button>
+            </div>
+        </div>
+    </div>
+</div>

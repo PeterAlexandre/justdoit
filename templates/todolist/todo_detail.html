@@ -1,0 +1,351 @@
+{% extends 'simple_page.html' %}
+{% load static widget_tweaks i18n %}
+
+<!-- simple_page blocks -->
+{% block html_title %}
+    - {{ todo.title }}
+{% endblock %}
+
+{% block page_title %}
+    {{ todo.title }}
+{% endblock %}
+
+{% block dropdown_itens %}
+    <li><a href="#" data-toggle="modal" data-target="#updateTodolist">{% trans 'Change name' %}</a></li>
+    <li><a href="#" data-toggle="modal" data-target="#completedTasks">{% trans 'Completed tasks' %}</a></li>
+    <li><a href="#" data-toggle="modal" data-target="#confirmDelete">{% trans 'Delete list' %}</a></li>
+{% endblock %}
+
+{% block content %}
+
+    <form id="formTask" class="form-group has-feedback" method="POST" style="margin-bottom: 25px; color: gray !important;">
+        {% csrf_token %}
+        {% trans 'Add new task' as add_task %}
+        {% render_field task_form.title class="form-control" id="newTaskInput" placeholder=add_task autocomplete="off" %}
+        <span class="form-control-feedback" style="margin: 7px">
+            <em class="fa fa-lg fa-plus"></em>
+        </span>
+        <div id="formTaskError" class="comment hidden text-danger"></div>
+    </form>
+
+    {% for task_form in task_formset %}
+        {% with task=task_form.instance %}
+            <div id="taskError{{ task.id }}" class="comment hidden text-danger"></div>
+            <div class="alert bg-primary" data-toggle="modal" data-target="#task{{ task.id }}">
+                <a href="#" id="task-anchor" onclick='completeTask({{ task.id }}, "{{ task_form.prefix }}")'>
+                    <em class="fa fa-lg fa-square-o">&nbsp;</em>
+                </a>
+                {{ task.title }}
+                <a href="#" class="pull-right" onclick="deleteTask({{ task.id }})">
+                    <em class="fa fa-lg fa-trash" aria-hidden="true" style="color: gray !important;"></em>
+                </a>
+            </div>
+
+            <!-- Modal {{ task }} -->
+            <div id="task{{ task.id }}" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content task-modal-font">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">
+                                {% trans 'Task title' as task_title %}
+                                {% render_field task_form.title class="form-control task-modal-font" placeholder=task_title value=task.title autocomplete="off" %}
+                            </h4>
+                        </div>
+                        <form class="modal-body">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-xs-8 col-sm-9 col-md-10">
+                                    <div class="form-group">
+                                        {% trans 'Write the description here!' as task_description %}
+                                        {% render_field task_form.description class="task-modal-form form-control" placeholder=task_description %}
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 col-sm-3 col-md-2" style="padding-left: 5px !important;">
+                                    <div>
+                                        <strong>{% trans 'Created at:' %}</strong>
+                                    </div>
+                                    <div style="padding-bottom: 10px;">{{ task.created_at|date:"SHORT_DATETIME_FORMAT" }}</div>
+                                    <div>
+                                        <strong>{% trans 'Updated at:' %}</strong>
+                                    </div>
+                                    <div>{{ task.updated_at|date:"SHORT_DATETIME_FORMAT" }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {% render_field task_form.deadline class="task-modal-form" %}
+                            </div>
+                            <div id="updateTaskError{{ task.id }}" class="comment hidden text-danger"></div>
+                        </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
+                            <button class="btn btn-primary" data-prefix="{{ task_form.prefix }}" onclick='updateTask({{ task.id }}, "{{ task_form.prefix }}")'>{% trans 'Save' %}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endwith %}
+    {% endfor %}
+
+    <!-- Modal to edit and update todolist -->
+    <div id="updateTodolist" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{% trans 'Change name' %}</h4>
+                </div>
+                <form class="modal-body" id="updateTodolistForm" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {% trans 'List title' as list_title %}
+                        {% render_field todo_create.title class="form-control" placeholder=list_title value=todo.title id="changedTitle" %}
+                        <div id="updateTodolistFormError" class="comment hidden text-danger"></div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
+                    <button class="btn btn-primary" form="updateTodolistForm">{% trans 'Save' %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal to confirm delete todolist -->
+    <div id="confirmDelete" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{% trans 'Are you sure?' %}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <em class="fa fa-lg fa-warning">&nbsp;</em>
+                        {% trans "You're about to delete " %}<strong>{{ todo.title }}</strong>. <span class="text-danger">{% trans 'This action cannot be undone!' %}</span>
+                    </p>
+                    <div id="deleteTodolistFormError" class="comment hidden text-danger"></div>
+
+                </div>
+                <form class="modal-footer" id="deleteTodolistForm" method="POST">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
+                    <button class="btn btn-danger">{% trans 'Delete' %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal completed tasks list -->
+    <div id="completedTasks" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{% trans 'Completed tasks' %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% for task in completed_tasks %}
+                        <div class="alert bg-primary" id="completed-task-{{ task.id }}" >
+                            <a href="#" id="task-anchor" onclick="restoreCompletedTask({{ task.id }})">
+                                <em class="fa fa-lg fa-check-square-o">&nbsp;</em>
+                            </a>
+                            <span id="completed-task-{{ task.id }}-title" style="text-decoration: line-through;" >{{ task.title }}</span>
+                            <a href="#" class="pull-right" onclick="deleteCompletedTask({{ task.id }})">
+                                <em class="fa fa-lg fa-trash" aria-hidden="true" style="color: gray !important;"></em>
+                            </a>
+                        </div>
+                    {% empty %}
+                        <span>{% trans "You don't have " %}<strong>{% trans 'completed tasks' %}</strong>{% trans ' in this list.' %}</span>
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.reload()">{% trans 'Close' %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script>
+        $(document).ready(function(){
+            $('[name$="deadline"]').mask("00/00/0000 00:00:00", {placeholder: "__/__/____ 00:00:00"});
+        });
+
+        // Request: Edit to do list
+        $("#updateTodolistForm").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: "http://127.0.0.1:8000/api/v1/todo/{{ todo.pk }}/",
+                type: "PUT",
+                data : {title: $("#changedTitle").val()},
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data) {
+                location.href = "{% url 'todolist:todo_detail' pk=99999 %}".replace("99999", data.pk);
+            }).fail(function (data) {
+                $("#updateTodolistFormError").text(data.error().responseJSON.detail);
+                $("#updateTodolistFormError").removeClass("hidden");
+            })
+        });
+
+        // Request: Delete to do list
+        $("#deleteTodolistForm").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: "http://127.0.0.1:8000/api/v1/todo/{{ todo.pk }}/",
+                type: "DELETE",
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data) {
+                location.href = "{% url 'todolist:home' %}";
+            }).fail(function (data) {
+                $("#deleteTodolistFormError").text(data.error().responseJSON.detail);
+                $("#deleteTodolistFormError").removeClass("hidden");
+            })
+        });
+
+        // Request: Create a new task
+        $("#formTask").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: "http://127.0.0.1:8000/api/v1/task/",
+                type: "POST",
+                data: {
+                    title: $("#newTaskInput").val(),
+                    to_do: {{ todo.pk }}
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data) {
+                location.reload()
+            }).fail(function (data) {
+                $("#formTaskError").text(data.error().responseText);
+                $("#formTaskError").removeClass("hidden");
+            })
+        });
+
+        // Request: Delete task
+        function deleteTask(taskId) {
+            $.ajax({
+                url: `http://127.0.0.1:8000/api/v1/task/${taskId}/`,
+                type: "DELETE",
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data){
+                location.reload()
+            }).fail(function (data) {
+                $(`#taskError${taskId}`).text(data.error().responseJSON.detail);
+                $(`#taskError${taskId}`).removeClass("hidden");
+            })
+        }
+
+        // Request: Update task
+        function updateTask(taskId, taskPrefix) {
+            let date = $(`#id_${taskPrefix}-deadline`).val();
+
+            if (date.length != 0 && date.length != "YYYY/MM/DD HH:mm:ss".length) {
+                $(`#updateTaskError${taskId}`).text('{% trans "Invalid date field." %}');
+                $(`#updateTaskError${taskId}`).removeClass("hidden");
+                return
+            }
+            $.ajax({
+                    url: `http://127.0.0.1:8000/api/v1/task/${taskId}/`,
+                    type: "PUT",
+                    data : {
+                        to_do: {{ todo.pk }},
+                        title: $(`#id_${taskPrefix}-title`).val(),
+                        description: $(`#id_${taskPrefix}-description`).val(),
+                        deadline: date.replace(/(\d{2})\/(\d{2})\/(\d{4}) (\d{2}:\d{2}:\d{2})/, "$3-$2-$1T$4")
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!safeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                        }
+                    }
+                }).done(function (data) {
+                    location.reload()
+                }).fail(function (data) {
+                    $(`#updateTaskError${taskId}`).text(data.error().responseText);
+                    $(`#updateTaskError${taskId}`).removeClass("hidden");
+                })
+        }
+
+        // Request: Complete task
+        function completeTask(taskId, taskPrefix) {
+            $.ajax({
+                url: `http://127.0.0.1:8000/api/v1/task/${taskId}/`,
+                type: "PUT",
+                data : {
+                    to_do: {{ todo.pk }},
+                    title: $(`#id_${taskPrefix}-title`).val(),
+                    status: "DONE"
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data) {
+                location.reload()
+            }).fail(function (data) {
+                $(`#taskError${taskId}`).text(data.error().responseText);
+                $(`#taskError${taskId}`).removeClass("hidden");
+            })
+        }
+
+        function restoreCompletedTask(taskId) {
+            $.ajax({
+                url: `http://127.0.0.1:8000/api/v1/task/${taskId}/`,
+                type: "PUT",
+                data : {
+                    to_do: {{ todo.pk }},
+                    title: $(`#completed-task-${taskId}-title`).text(),
+                    status: "OPEN"
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data) {
+                $(`#completed-task-${taskId}`).hide();
+            }).fail(function (data) {
+                $(`#taskError${taskId}`).text(data.error().responseText);
+                $(`#taskError${taskId}`).removeClass("hidden");
+            })
+        }
+
+        function deleteCompletedTask(taskId) {
+            $.ajax({
+                url: `http://127.0.0.1:8000/api/v1/task/${taskId}/`,
+                type: "DELETE",
+                beforeSend: function (xhr, settings) {
+                    if (!safeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", fromCookie("csrftoken"));
+                    }
+                }
+            }).done(function (data){
+                $(`#completed-task-${taskId}`).hide();
+            }).fail(function (data) {
+                $(`#taskError${taskId}`).text(data.error().responseJSON.detail);
+                $(`#taskError${taskId}`).removeClass("hidden");
+            })
+        }
+    </script>
+{% endblock %}

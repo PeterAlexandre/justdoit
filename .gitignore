@@ -134,4 +134,7 @@ dmypy.json
 # Ignore all local history of files
 .history
 
+### mediafiles
+mediafiles/
+
 # End of https://www.gitignore.io/api/python,visualstudiocode
