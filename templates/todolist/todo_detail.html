@@ -179,7 +179,7 @@
         $("#updateTodolistForm").submit(function (event) {
             event.preventDefault();
             $.ajax({
-                url: "http://127.0.0.1:8000/api/v1/todo/{{ todo.pk }}/",
+                url: "{% url 'api:v1:todolist.todo-detail' pk=todo.pk %}",
                 type: "PUT",
                 data : {title: $("#changedTitle").val()},
                 beforeSend: function (xhr, settings) {
@@ -199,7 +199,7 @@
         $("#deleteTodolistForm").submit(function (event) {
             event.preventDefault();
             $.ajax({
-                url: "http://127.0.0.1:8000/api/v1/todo/{{ todo.pk }}/",
+                url: "{% url 'api:v1:todolist.todo-detail' pk=todo.pk %}",
                 type: "DELETE",
                 beforeSend: function (xhr, settings) {
                     if (!safeMethod(settings.type) && !this.crossDomain) {
@@ -218,7 +218,7 @@
         $("#formTask").submit(function (event) {
             event.preventDefault();
             $.ajax({
-                url: "http://127.0.0.1:8000/api/v1/task/",
+                url: "{% url 'api:v1:todolist.task-list' %}",
                 type: "POST",
                 data: {
                     title: $("#newTaskInput").val(),
@@ -240,7 +240,7 @@
         // Request: Delete task
         function deleteTask(taskId) {
             $.ajax({
-                url: `http://127.0.0.1:8000/api/v1/task/${taskId}/`,
+                url: "{% url 'api:v1:todolist.task-detail' pk=99999 %}".replace(99999, taskId),
                 type: "DELETE",
                 beforeSend: function (xhr, settings) {
                     if (!safeMethod(settings.type) && !this.crossDomain) {
@@ -265,7 +265,7 @@
                 return
             }
             $.ajax({
-                    url: `http://127.0.0.1:8000/api/v1/task/${taskId}/`,
+                    url: "{% url 'api:v1:todolist.task-detail' pk=99999 %}".replace(99999, taskId),
                     type: "PUT",
                     data : {
                         to_do: {{ todo.pk }},
@@ -289,7 +289,7 @@
         // Request: Complete task
         function completeTask(taskId, taskPrefix) {
             $.ajax({
-                url: `http://127.0.0.1:8000/api/v1/task/${taskId}/`,
+                url: "{% url 'api:v1:todolist.task-detail' pk=99999 %}".replace(99999, taskId),
                 type: "PUT",
                 data : {
                     to_do: {{ todo.pk }},
@@ -311,7 +311,7 @@
 
         function restoreCompletedTask(taskId) {
             $.ajax({
-                url: `http://127.0.0.1:8000/api/v1/task/${taskId}/`,
+                url: "{% url 'api:v1:todolist.task-detail' pk=99999 %}".replace(99999, taskId),
                 type: "PUT",
                 data : {
                     to_do: {{ todo.pk }},
@@ -333,7 +333,7 @@
 
         function deleteCompletedTask(taskId) {
             $.ajax({
-                url: `http://127.0.0.1:8000/api/v1/task/${taskId}/`,
+                url: "{% url 'api:v1:todolist.task-detail' pk=99999 %}".replace(99999, taskId),
                 type: "DELETE",
                 beforeSend: function (xhr, settings) {
                     if (!safeMethod(settings.type) && !this.crossDomain) {

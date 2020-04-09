@@ -36,7 +36,7 @@
             event.preventDefault();
 
             $.ajax({
-                url: "http://127.0.0.1:8000/api/v1/todo/",
+                url: "{% url 'api:v1:todolist.todo-list' %}",
                 type: "POST",
                 data: {title: $("#id_title").val()},
                 beforeSend: function (xhr, settings) {
