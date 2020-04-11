@@ -136,6 +136,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_ROOT = BASE_DIR('mediafiles')
 MEDIA_URL = '/media/'
+ALLOW_MEDIA = env.bool('ALLOW_MEDIA', default=False)
 
 # Django Rest Framework
 REST_FRAMEWORK = {

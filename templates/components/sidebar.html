@@ -3,10 +3,14 @@
 <div id="sidebar" class="col-sm-3 col-lg-2 sidebar parent">
     <div class="profile-sidebar" data-toggle="collapse" href="#logout" style="cursor: pointer;">
         <div class="profile-userpic">
-            {% if user.profile.picture %}
+            {% if allow_media and user.profile.picture %}
                 <img src="{{ user.profile.picture.url }}" class="img-responsive" alt="">
             {% else %}
-                <img src="{% static 'img/profile.png' %}" class="img-responsive" alt="">
+                <div class="img-responsive avatar-circle">
+                    <span class="initials">
+                        {{ user.first_name|slice:":1"}}{{ user.last_name|slice:":1"}}
+                    </span>
+                </div>
             {% endif %}
         </div>
         <div class="profile-usertitle">
@@ -23,11 +27,13 @@
         <div class="clear"></div>
     </div>
     <ul class="children collapse nav menu" id="logout" style="background-color: #f1f4f7; margin: unset;">
-        <li>
-            <a href="#" data-toggle="modal" data-target="#changeAvatar">
-                <span class="fa fa-sign-out">&nbsp;</span> {% trans 'Change avatar' %}
-            </a>
-        </li>
+        {% if allow_media %}
+            <li>
+                <a href="#" data-toggle="modal" data-target="#changeAvatar">
+                    <span class="fa fa-sign-out">&nbsp;</span> {% trans 'Change avatar' %}
+                </a>
+            </li>
+        {% endif %}
         <li>
             <a href="{% url 'logout' %}">
                 <span class="fa fa-sign-out">&nbsp;</span> {% trans 'Logout' %}
@@ -58,23 +64,25 @@
     </ul>
 </div><!--/.sidebar-->
 
-<div id="changeAvatar" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">{% trans 'Change avatar' %}</h4>
-            </div>
-            <form class="modal-body" id="chageAvatarForm" method="POST" action="{% url 'todolist:profile' %}" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="form-group">
-                    {% render_field profile_create.picture id="image_file" %}
+{% if allow_media %}
+    <div id="changeAvatar" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{% trans 'Change avatar' %}</h4>
                 </div>
-            </form>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
-                <button class="btn btn-primary" form="chageAvatarForm">{% trans 'Save' %}</button>
+                <form class="modal-body" id="chageAvatarForm" method="POST" action="{% url 'todolist:profile' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {% render_field profile_create.picture id="image_file" %}
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
+                    <button class="btn btn-primary" form="chageAvatarForm">{% trans 'Save' %}</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+{% endif %}
