@@ -190,7 +190,14 @@
             }).done(function (data) {
                 location.href = "{% url 'todolist:todo_detail' pk=99999 %}".replace("99999", data.pk);
             }).fail(function (data) {
-                $("#updateTodolistFormError").text(data.error().responseJSON.detail);
+                var r = data.error().responseJSON;
+                if (r.title) {
+                    $("#updateTodolistFormError").text(r.title[0]);
+                } else if (r.detail) {
+                    $("#updateTodolistFormError").text(r.detail);
+                } else {
+                    $("#updateTodolistFormError").text('{% trans "Something went wrong! Please, refresh this page." %}');
+                }
                 $("#updateTodolistFormError").removeClass("hidden");
             })
         });
@@ -209,7 +216,12 @@
             }).done(function (data) {
                 location.href = "{% url 'todolist:home' %}";
             }).fail(function (data) {
-                $("#deleteTodolistFormError").text(data.error().responseJSON.detail);
+                var r = data.error().responseJSON;
+                if (r.detail) {
+                    $("#deleteTodolistFormError").text(r.detail);
+                } else {
+                    $("#deleteTodolistFormError").text('{% trans "Something went wrong! Please, refresh this page." %}');
+                }
                 $("#deleteTodolistFormError").removeClass("hidden");
             })
         });
@@ -232,7 +244,16 @@
             }).done(function (data) {
                 location.reload()
             }).fail(function (data) {
-                $("#formTaskError").text(data.error().responseText);
+                var r = data.error().responseJSON;
+                if (r.title) {
+                    $("#formTaskError").text(r.title[0]);
+                } else if (r.to_do) {
+                    $("#formTaskError").text('{% trans "Todolist not found! Something went wrong! Please, refresh this page." %}');
+                } else if (r.detail) {
+                    $("#formTaskError").text(r.detail);
+                } else {
+                    $("#formTaskError").text('{% trans "Something went wrong! Please, refresh this page." %}');
+                }
                 $("#formTaskError").removeClass("hidden");
             })
         });
@@ -250,7 +271,12 @@
             }).done(function (data){
                 location.reload()
             }).fail(function (data) {
-                $(`#taskError${taskId}`).text(data.error().responseJSON.detail);
+                var r = data.error().responseJSON;
+                if (r.detail) {
+                    $(`#taskError${taskId}`).text(r.detail);
+                } else {
+                    $(`#taskError${taskId}`).text('{% trans "Something went wrong! Please, refresh this page." %}');
+                }
                 $(`#taskError${taskId}`).removeClass("hidden");
             })
         }
@@ -281,7 +307,17 @@
                 }).done(function (data) {
                     location.reload()
                 }).fail(function (data) {
-                    $(`#updateTaskError${taskId}`).text(data.error().responseText);
+                    var r = data.error().responseJSON;
+                    console.log(r);
+                    if (r.title) {
+                        $(`#updateTaskError${taskId}`).text('{% trans "The title is wrong!" %}' + " " + r.title[0]);
+                    } else if (r.to_do) {
+                        $(`#updateTaskError${taskId}`).text('{% trans "Todolist not found! Something went wrong! Please, refresh this page." %}');
+                    } else if (r.detail) {
+                        $(`#updateTaskError${taskId}`).text(r.detail);
+                    } else {
+                        $(`#updateTaskError${taskId}`).text('{% trans "Something went wrong! Please, refresh this page." %}');
+                    }
                     $(`#updateTaskError${taskId}`).removeClass("hidden");
                 })
         }

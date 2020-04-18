@@ -34,7 +34,6 @@
     <script>
         $("#formTodo").submit(function (event) {
             event.preventDefault();
-
             $.ajax({
                 url: "{% url 'api:v1:todolist.todo-list' %}",
                 type: "POST",
@@ -47,7 +46,14 @@
             }).done(function (data){
                 location.href = "{% url 'todolist:todo_detail' pk=99999 %}".replace("99999", data.pk);
             }).fail(function (data) {
-                $("#formTodoError").text(data.error().responseJSON.detail);
+                var r = data.error().responseJSON;
+                if (r.title) {
+                    $("#formTodoError").text(r.title[0]);
+                } else if (r.detail) {
+                    $("#formTodoError").text(r.detail);
+                } else {
+                    $("#formTodoError").text('{% trans "Something went wrong! Please, refresh this page." %}');
+                }
                 $("#formTodoError").removeClass("hidden");
             })
         });
