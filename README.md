@@ -1,6 +1,6 @@
 # Justdoit <img src="static/img/icon.png" width="20">
 > A portfolio application made in django to manage tasks and increase productivity.
-> To access click here:https://justdoit-todolist.herokuapp.com/
+> To access click here: https://justdoit-todolist.herokuapp.com/
 
 [![Python Version](https://img.shields.io/badge/python-v3.8-blue)](https://www.python.org/)
 [![Django Version](https://img.shields.io/badge/django-v.3.0-green)](https://www.djangoproject.com/)
@@ -33,7 +33,7 @@ Environment variables
 | SECRET_KEY | This is used to provide cryptographic signing and should be set to a unique, unpredictable value. |
 | DEBUG | Set boolean value True if you want see django debug responses. |
 | ALLOWED_HOSTS | To run this project in local, set "*". |
-| DATABASE_URL | postgres://<user_name>:user_password>@localhost:5432/<database_name> |
+| DATABASE_URL | postgres://<user_name>:<user_password>@localhost:5432/<database_name> |
 | ALLOW_MEDIA | Boolean value. Use True if the project supports the use of media files |
 
 Copyright
