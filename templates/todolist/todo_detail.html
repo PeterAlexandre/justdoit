@@ -30,19 +30,19 @@
 
     {% for task_form in task_formset %}
         {% with task=task_form.instance %}
-            <div id="taskError{{ task.id }}" class="comment hidden text-danger"></div>
-            <div class="alert bg-primary" data-toggle="modal" data-target="#task{{ task.id }}">
-                <a href="#" id="task-anchor" onclick='completeTask({{ task.id }}, "{{ task_form.prefix }}")'>
+            <div id="taskError{{ task.pk }}" class="comment hidden text-danger"></div>
+            <div class="alert bg-primary" onclick="taskModal(event, {{ task.pk }})">
+                <a href="#" id="task-anchor" onclick='completeTask({{ task.pk }}, "{{ task_form.prefix }}")'>
                     <em class="fa fa-lg fa-square-o">&nbsp;</em>
                 </a>
                 {{ task.title }}
-                <a href="#" class="pull-right" onclick="deleteTask({{ task.id }})">
+                <a href="#" class="pull-right" onclick="deleteTask({{ task.pk }})">
                     <em class="fa fa-lg fa-trash" aria-hidden="true" style="color: gray !important;"></em>
                 </a>
             </div>
 
             <!-- Modal {{ task }} -->
-            <div id="task{{ task.id }}" class="modal fade" role="dialog">
+            <div id="task{{ task.pk }}" class="modal fade" role="dialog">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content task-modal-font">
                         <div class="modal-header">
@@ -75,11 +75,11 @@
                             <div class="form-group">
                                 {% render_field task_form.deadline class="task-modal-form" %}
                             </div>
-                            <div id="updateTaskError{{ task.id }}" class="comment hidden text-danger"></div>
+                            <div id="updateTaskError{{ task.pk }}" class="comment hidden text-danger"></div>
                         </form>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
-                            <button class="btn btn-primary" data-prefix="{{ task_form.prefix }}" onclick='updateTask({{ task.id }}, "{{ task_form.prefix }}")'>{% trans 'Save' %}</button>
+                            <button type="buttontaskModal" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
+                            <button class="btn btn-primary" data-prefix="{{ task_form.prefix }}" onclick='updateTask({{ task.pk }}, "{{ task_form.prefix }}")'>{% trans 'Save' %}</button>
                         </div>
                     </div>
                 </div>
@@ -146,12 +146,12 @@
                 </div>
                 <div class="modal-body">
                     {% for task in completed_tasks %}
-                        <div class="alert bg-primary" id="completed-task-{{ task.id }}" >
-                            <a href="#" id="task-anchor" onclick="restoreCompletedTask({{ task.id }})">
+                        <div class="alert bg-primary" id="completed-task-{{ task.pk }}" >
+                            <a href="#" id="task-anchor" onclick="restoreCompletedTask({{ task.pk }})">
                                 <em class="fa fa-lg fa-check-square-o">&nbsp;</em>
                             </a>
-                            <span id="completed-task-{{ task.id }}-title" style="text-decoration: line-through;" >{{ task.title }}</span>
-                            <a href="#" class="pull-right" onclick="deleteCompletedTask({{ task.id }})">
+                            <span id="completed-task-{{ task.pk }}-title" style="text-decoration: line-through;" >{{ task.title }}</span>
+                            <a href="#" class="pull-right" onclick="deleteCompletedTask({{ task.pk }})">
                                 <em class="fa fa-lg fa-trash" aria-hidden="true" style="color: gray !important;"></em>
                             </a>
                         </div>
@@ -174,6 +174,12 @@
         $(document).ready(function(){
             $('[name$="deadline"]').mask("00/00/0000 00:00:00", {placeholder: "__/__/____ 00:00:00"});
         });
+
+        function taskModal (event, taskId) {
+            if (event.target.tagName != "EM") {
+                $(`#task${taskId}`).modal("toggle");
+            }
+        }
 
         // Request: Edit to do list
         $("#updateTodolistForm").submit(function (event) {
