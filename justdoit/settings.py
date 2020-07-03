@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_yasg',
 
     'justdoit.todolist',
 ]
