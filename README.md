@@ -2,6 +2,8 @@
 > A portfolio application made in django to manage tasks and increase productivity.
 > To access click here: https://justdoit-todolist.herokuapp.com/
 
+> To access the API documentation click here: https://justdoit-todolist.herokuapp.com/api/v1/docs/
+
 [![Python Version](https://img.shields.io/badge/python-v3.8-blue)](https://www.python.org/)
 [![Django Version](https://img.shields.io/badge/django-v.3.0-green)](https://www.djangoproject.com/)
 [![Bootstrap Version](https://img.shields.io/badge/bootstrap-v3.0-blueviolet)](https://getbootstrap.com/docs/3.3/)
